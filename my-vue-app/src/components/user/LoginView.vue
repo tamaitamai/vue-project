@@ -16,10 +16,13 @@
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
 
 const router = useRouter()
 const mail = ref('')
 const password = ref('')
+const store = useStore()
 
 function insertUser(){
     axios.post('/user/login',
@@ -30,7 +33,7 @@ function insertUser(){
     ).then(response => {
         mail.value = ''
         password.value = ''        
-        console.log(response)
+        store.dispatch('updateResponseData', response.data);
         router.push({path: '/'})
     })
 }

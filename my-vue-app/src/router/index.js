@@ -1,14 +1,14 @@
 import { createRouter,createWebHistory } from 'vue-router'
 import InsertView from '../components/user/InsertView.vue'
 import LoginView from '../components/user/LoginView.vue'
-import HelloView from '../components/HelloWorld.vue'
+import HomeView from '../components/main/HomeView.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
     {
         path: '/',
-        name: 'hello',
-        component: HelloView
+        name: 'home',
+        component: HomeView
     },
     {
         path: '/insert',
