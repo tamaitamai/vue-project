@@ -1,19 +1,14 @@
 <template>
     <h1>ホーム画面</h1>
+    <p>{{ user }}</p>
 </template>
+
 <script setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const response = computed(() => store.getters.getResponseData);
+const user = computed(() => store.getters.getUserData);
 
-const count = ref(store.getters.getResponseData)
-console.log(count.value)
-
-console.log(response.value);
-console.log(response.value.mail)
-console.log(response.value.password)
-
-
+console.log(user.value)
 </script>

@@ -33,7 +33,8 @@ function insertUser(){
     ).then(response => {
         mail.value = ''
         password.value = ''        
-        store.dispatch('updateResponseData', response.data);
+        store.dispatch('updateUserData', response.data);
+        
         router.push({path: '/'})
     })
 }

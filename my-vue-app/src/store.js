@@ -1,22 +1,30 @@
 import { createStore } from 'vuex';
 
 const store = createStore({
-  state: {
-    responseData: null,
-  },
-  mutations: {
-    setResponseData(state, data) {
-      state.responseData = data;
+    state: {
+        responseData: null,
+        userData: null
     },
-  },
-  actions: {
-    updateResponseData({ commit }, data) {
-      commit('setResponseData', data);
+    mutations: {
+        setResponseData(state, data) {
+            state.responseData = data;
+        },
+        setUserData(state,data){
+            state.userData = data
+        }
     },
-  },
-  getters: {
-    getResponseData: (state) => state.responseData,
-  },
+    actions: {
+        updateResponseData({ commit }, data) {
+            commit('setResponseData', data);
+        },
+        updateUserData({ commit }, data) {
+            commit('setUserData', data);
+        },
+    },
+    getters: {
+        getResponseData: (state) => state.responseData,
+        getUserData: (state) => state.userData
+    },
 });
 
 export default store;

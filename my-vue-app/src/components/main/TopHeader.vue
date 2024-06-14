@@ -1,7 +1,7 @@
-<script setup></script>
 <template>
+    
     <header>
-        <RouterLink to="/" class="home-box">ホーム</RouterLink>
+        <RouterLink to="/" class="home-box">ホーム</RouterLink>        
         <div class="login-box">
             <RouterLink to="/insert">新規登録</RouterLink>
             <RouterLink to="/login">ログイン</RouterLink>
@@ -9,6 +9,12 @@
     </header>
     
 </template>
+
+<script setup>
+// defineProps(['item'])
+
+</script>
+
 <style scoped>
 header{
     display: flex;
