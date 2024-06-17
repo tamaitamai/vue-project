@@ -6,9 +6,7 @@
 </template>
 
 <script setup>
-
 import TopHeader from './components/main/TopHeader.vue'
-
 
 </script>
 

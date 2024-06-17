@@ -39,4 +39,9 @@ public class UserContoroller {
 		session.setAttribute("user", userSelect);
 		return userSelect;
 	}
+	
+	@PostMapping("/logOut")
+	public void logOut() {
+		session.invalidate();
+	}
 }

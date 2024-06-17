@@ -1,7 +1,5 @@
 package com.example.repository;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -20,6 +18,7 @@ public class UserRepository {
 	private static RowMapper<User> USER_ROW_MAPPER = (rs,i) ->{
 		User user = new User();
 		user.setId(rs.getInt("id"));
+		user.setName(rs.getString("name"));;
 		user.setMail(rs.getString("mail"));
 		user.setPassword(rs.getString("password"));
 		return user;
@@ -30,7 +29,7 @@ public class UserRepository {
 	 * @param user
 	 */
 	public void userInsert(User user) {
-		String sql = "INSERT INTO users(mail,password)VALUES(:mail,:password);";
+		String sql = "INSERT INTO users(name,mail,password)VALUES(:name,:mail,:password);";
 		SqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		template.update(sql, params);
 	}
@@ -42,7 +41,7 @@ public class UserRepository {
 	 * @return
 	 */
 	public User userSelect(String mail, String password) {
-		String sql = "SELECT id,mail,password FROM users WHERE mail = :mail AND password = :password;";
+		String sql = "SELECT id,name,mail,password FROM users WHERE mail = :mail AND password = :password;";
 		SqlParameterSource params = new MapSqlParameterSource("mail",mail).addValue("password", password);
 		return template.queryForObject(sql, params, USER_ROW_MAPPER);
 	}

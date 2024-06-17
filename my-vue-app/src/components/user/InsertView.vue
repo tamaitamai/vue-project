@@ -3,6 +3,8 @@
         <div class="user-box">
             <h1>新規登録</h1>
             <div>
+                <p>名前:</p>
+                <input type="text" v-model="name">
                 <p>メール:</p>
                 <input type="text" v-model="mail">
                 <p>パスワード:</p>
@@ -18,16 +20,19 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+const name = ref('')
 const mail = ref('')
 const password = ref('')
 
 function insertUser(){
     axios.post('/user/insert',
         {
+            name: name.value,
             mail: mail.value,
             password: password.value
         }
     ).then(() => {
+        name.value = ''
         mail.value = ''
         password.value = ''
         router.push('/login')
