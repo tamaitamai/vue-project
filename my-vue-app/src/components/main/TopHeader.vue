@@ -3,8 +3,10 @@
         <div class="login-box">
             <RouterLink to="/">ホーム</RouterLink>
             <RouterLink to="/item">商品一覧</RouterLink>
+            <div v-if="!isShow">
+                <RouterLink to="/cartConfirm">カートの中身の確認</RouterLink>
+            </div>
         </div>
-        
         <div v-if="isShow" class="login-box">
             <RouterLink to="/insert">新規登録</RouterLink>
             <RouterLink to="/login">ログイン</RouterLink>

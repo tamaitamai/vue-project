@@ -4,6 +4,8 @@ import LoginView from '../components/user/LoginView.vue'
 import HomeView from '../components/main/HomeView.vue'
 import ItemList from '../components/main/ItemList.vue'
 import ItemDetail from '@/components/main/detail/ItemDetail.vue'
+import CartConfirm from '@/components/main/CartConfirm.vue'
+import ReviewInput from '@/components/main/detail/ReviewInput.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
@@ -31,6 +33,16 @@ const router = new createRouter({
         path: '/detail/:id',
         name: 'detail',
         component: ItemDetail
+    },
+    {
+        path: '/cartConfirm',
+        name: 'cartConfirm',
+        component: CartConfirm
+    },
+    {
+        path: '/reviewInput/:itemId',
+        name: 'reviewInput',
+        component: ReviewInput
     }
 ]
 })

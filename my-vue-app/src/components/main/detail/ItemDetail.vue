@@ -3,13 +3,15 @@
         <p>{{ item.name }}</p>
         <img :src="'/image/' + item.image" class="item-detail-image">
         <p>{{ item.comment }}</p>
-        <p>{{ item.price }}</p>
+        <p>{{ item.price }}円</p>
     </div>
+    <ReviewList :item-id="item.id"/>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import ReviewList from './ReviewList.vue';
 
 const item = ref('')
 const route = useRoute();

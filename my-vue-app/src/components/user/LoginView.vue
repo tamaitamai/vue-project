@@ -35,7 +35,7 @@ function insertUser(){
         password.value = ''        
         store.dispatch('updateUserData', response.data);
         
-        router.push({path: '/'})
+        router.push({path: '/item'})
     })
 }
 </script>
