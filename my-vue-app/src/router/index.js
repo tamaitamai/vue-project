@@ -40,7 +40,7 @@ const router = new createRouter({
         component: CartConfirm
     },
     {
-        path: '/reviewInput/:itemId',
+        path: '/reviewInput/:itemId/:editFlag',
         name: 'reviewInput',
         component: ReviewInput
     }
