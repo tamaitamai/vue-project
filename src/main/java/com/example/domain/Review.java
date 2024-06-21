@@ -19,6 +19,7 @@ public class Review {
 	private String name;
 	private String comment;
 	private Integer goodTotal;
+	private boolean editFlag;
 	private User user;
 	private ReviewGood reviewGood;
 	private List<ReviewGood> reviewGoods = new ArrayList<>();

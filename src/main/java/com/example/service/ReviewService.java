@@ -38,6 +38,14 @@ public class ReviewService {
 	}
 	
 	/**
+	 * レビュー更新
+	 * @param review
+	 */
+	public void reviewUpdate(Review review) {
+		reviewRepostitory.reviewUpdate(review);
+	}
+	
+	/**
 	 * レビュー一覧
 	 * @return
 	 */

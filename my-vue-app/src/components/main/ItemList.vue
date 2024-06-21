@@ -7,6 +7,11 @@
                     <p>{{ item.name }}</p>
                     <img :src="'/image/' + item.image" class="item-image" @click = "itemDetail(item.id)">
                     <p>{{ item.price + '円' }}</p>
+                    <p class="item-count">
+                        <span class="count-down" @click="countDown()">-</span>
+                        <span class="count-view">{{ count }}</span>
+                        <span class="count-up" @click="countUp()">+</span>
+                    </p>
                     <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
                 </div>
             </div>
@@ -25,6 +30,7 @@ import { useStore } from 'vuex';
 const itemList = ref('')
 const cartList = ref('')
 const totalPrice = ref(0)
+const count = ref(1)
 const router = useRouter()
 const store = useStore()
 const user = computed(() => store.getters.getUserData)
@@ -58,7 +64,7 @@ function itemAdd(item){
             userId: user.value.id,
             name: item.name,
             image: item.image,
-            price: item.price
+            price: item.price,            
         }
     )
     .then(response => {
@@ -72,6 +78,14 @@ function cartUpdate(response){
 function totalPriceUpdate(price){
     console.log('totalPrice'+price)
     totalPrice.value = totalPrice.value - price
+}
+function countUp(){
+    count.value++
+}
+function countDown(){
+    if(count.value > 0){
+        count.value--        
+    }
 }
 </script>
 <style scoped>
@@ -109,5 +123,19 @@ function totalPriceUpdate(price){
 }
 .item-btn{
     margin-bottom: 10px;
+}
+.item-count{
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.count-view{
+    background-color: gainsboro;
+    padding: 0px 10px;
+    border: 1px solid black;
+}
+.count-down,.count-up{
+    margin: 10px;
+    font-size: 20x;
+    cursor: pointer;
 }
 </style>

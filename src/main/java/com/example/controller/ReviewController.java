@@ -46,7 +46,11 @@ public class ReviewController {
 	 */
 	@PostMapping("/add")
 	public void reviewAdd(@RequestBody Review review) {
-		reviewService.reviewInsert(review);
+		if(review.isEditFlag()) {
+			reviewService.reviewUpdate(review);
+		}else {
+			reviewService.reviewInsert(review);	
+		}
 	}
 	
 	/**

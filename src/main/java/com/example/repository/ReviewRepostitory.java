@@ -133,6 +133,17 @@ public class ReviewRepostitory {
 	}
 	
 	/**
+	 * レビュー更新
+	 * @param review
+	 */
+	public void reviewUpdate(Review review) {
+		String sql = "UPDATE reviews SET star = :star, name = :name, comment = :comment "
+				+ "WHERE item_id = :itemId AND user_id = :userId;";
+		SqlParameterSource params = new BeanPropertySqlParameterSource(review);
+		template.update(sql, params);
+	}
+	
+	/**
 	 * goodの数の更新
 	 * @param reviewId
 	 */

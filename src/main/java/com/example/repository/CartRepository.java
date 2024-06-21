@@ -24,6 +24,7 @@ public class CartRepository {
 		cart.setName(rs.getString("name"));
 		cart.setImage(rs.getString("image"));
 		cart.setPrice(rs.getInt("price"));
+		cart.setCount(rs.getInt("count"));
 		return cart;
 	};
 	
@@ -33,7 +34,7 @@ public class CartRepository {
 	 * @return
 	 */
 	public List<Cart> cartList(Integer userId){
-		String sql = "SELECT id,user_id,name,image,price FROM carts WHERE user_id = :userId;";
+		String sql = "SELECT id,user_id,name,image,price,count FROM carts WHERE user_id = :userId;";
 		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		return template.query(sql, params, CART_ROW_MAPPER);
 	}
@@ -43,7 +44,7 @@ public class CartRepository {
 	 * @param cart
 	 */
 	public void cartInsert(Cart cart) {
-		String sql = "INSERT INTO carts(user_id,name,image,price)VALUES(:userId,:name,:image,:price);";
+		String sql = "INSERT INTO carts(user_id,name,image,price,count)VALUES(:userId,:name,:image,:price,:count);";
 		SqlParameterSource params = new BeanPropertySqlParameterSource(cart);
 		template.update(sql, params);
 	}

@@ -1,7 +1,8 @@
 <template>
     <div class="review-area">
         <div class="review-box">
-            <h1>レビュー入力</h1>
+            <h1 v-if="$route.params.editFlag === 'false'">レビュー入力</h1>
+            <h1 v-else>レビュー編集</h1>
             <label for="name">ニックネーム：</label>
             <input type="text" id="name" class="review-name" v-model="name">
             <label for="comment">コメント：</label>
@@ -11,7 +12,8 @@
                     {{ star.text }}
                 </span>
             </div>
-            <button class="review-btn" @click="reviewInput()">投稿</button>
+            <button class="review-btn" @click="reviewInput()" v-if="$route.params.editFlag === 'false'">投稿</button>
+            <button class="review-btn" @click="reviewInput()" v-else>編集</button>
         </div>
         <RouterLink :to="'/detail/' + $route.params.itemId" style="margin-top: 50px">商品詳細に戻る</RouterLink>
     </div>
@@ -75,7 +77,8 @@ function reviewInput(){
             itemId: route.params.itemId,
             userId: user.value.id,
             name: name.value,
-            comment: comment.value
+            comment: comment.value,
+            editFlag: route.params.editFlag
         }
     )
     .then(() => {
