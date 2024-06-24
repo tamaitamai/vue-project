@@ -50,4 +50,10 @@ public class CartController {
 		cartService.cartDelete(cart.getId());
 		return cartService.cartList(cart.getUserId());
 	}
+	
+	@PostMapping("/countUpdate")
+	public List<Cart> countUpdate(@RequestBody Cart cart) {
+		cartService.cartCountUpdate(cart.getCount(), cart.getId());
+		return cartService.cartList(cart.getUserId());
+	}
 }

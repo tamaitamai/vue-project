@@ -4,7 +4,7 @@
             <RouterLink to="/">ホーム</RouterLink>
             <RouterLink to="/item">商品一覧</RouterLink>
             <div v-if="!isShow">
-                <RouterLink to="/cartConfirm">カートの中身の確認</RouterLink>
+                <RouterLink to="/cartConfirm">🛒</RouterLink>
             </div>
         </div>
         <div v-if="isShow" class="login-box">

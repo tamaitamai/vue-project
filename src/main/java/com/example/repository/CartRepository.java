@@ -21,6 +21,7 @@ public class CartRepository {
 		Cart cart = new Cart();
 		cart.setId(rs.getInt("id"));
 		cart.setUserId(rs.getInt("user_id"));
+		cart.setItemId(rs.getInt("item_id"));
 		cart.setName(rs.getString("name"));
 		cart.setImage(rs.getString("image"));
 		cart.setPrice(rs.getInt("price"));
@@ -34,7 +35,7 @@ public class CartRepository {
 	 * @return
 	 */
 	public List<Cart> cartList(Integer userId){
-		String sql = "SELECT id,user_id,name,image,price,count FROM carts WHERE user_id = :userId;";
+		String sql = "SELECT id,user_id,item_id,name,image,price,count FROM carts WHERE user_id = :userId ORDER BY id;";
 		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		return template.query(sql, params, CART_ROW_MAPPER);
 	}
@@ -44,7 +45,8 @@ public class CartRepository {
 	 * @param cart
 	 */
 	public void cartInsert(Cart cart) {
-		String sql = "INSERT INTO carts(user_id,name,image,price,count)VALUES(:userId,:name,:image,:price,:count);";
+		String sql = "INSERT INTO carts(user_id,item_id,name,image,price,count)"
+				+ "VALUES(:userId,:itemId,:name,:image,:price,:count);";
 		SqlParameterSource params = new BeanPropertySqlParameterSource(cart);
 		template.update(sql, params);
 	}
@@ -56,6 +58,17 @@ public class CartRepository {
 	public void cartDelete(Integer id) {
 		String sql = "DELETE FROM carts WHERE id = :id;";
 		SqlParameterSource params = new MapSqlParameterSource("id",id);
+		template.update(sql, params);
+	}
+	
+	/**
+	 * カートの商品数を更新
+	 * @param count
+	 * @param id
+	 */
+	public void cartCountUpdate(Integer count, Integer id) {
+		String sql = "UPDATE carts SET count = :count WHERE id = :id;";
+		SqlParameterSource params = new MapSqlParameterSource("count", count).addValue("id", id);
 		template.update(sql, params);
 	}
 }

@@ -39,4 +39,13 @@ public class CartService {
 	public void cartDelete(Integer id) {
 		cartRepository.cartDelete(id);
 	}
+	
+	/**
+	 * カートの商品数の更新
+	 * @param count
+	 * @param id
+	 */
+	public void cartCountUpdate(Integer count, Integer id) {
+		cartRepository.cartCountUpdate(count, id);
+	}
 }

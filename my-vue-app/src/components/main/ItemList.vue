@@ -1,23 +1,21 @@
 <template>
     <div class="container">
         <div class="item-area">
-            <h1>商品一覧</h1>
+            <h1>アイドル風景写真一覧</h1>
             <div class="item-list">
                 <div v-for = "item in itemList" :key = "item.id" class="item-box">
                     <p>{{ item.name }}</p>
                     <img :src="'/image/' + item.image" class="item-image" @click = "itemDetail(item.id)">
                     <p>{{ item.price + '円' }}</p>
-                    <p class="item-count">
-                        <span class="count-down" @click="countDown()">-</span>
-                        <span class="count-view">{{ count }}</span>
-                        <span class="count-up" @click="countUp()">+</span>
-                    </p>
+                    <select @change="updateCount">
+                        <option  v-for="num in 50" :key="num" :value="num">{{num}}</option>
+                    </select>
                     <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
                 </div>
             </div>
         </div>
         <CartList v-show="user !== null" :cartList="cartList" :user="user" :totalPrice="totalPrice" 
-        @cartUpdate = "cartUpdate" @total-price-update = "totalPriceUpdate"/>
+        @cartUpdate = "cartUpdate" @total-price-delete-update = "totalPriceDeleteUpdate" @cart-list-view = "cartListView"/>
     </div>
 </template>
 <script setup>
@@ -40,6 +38,10 @@ onMounted(() => {
     .then(response => {
         itemList.value = response.data   
     })
+    cartListView()
+})
+
+function cartListView(){
     if(user.value !== null){
         axios.post('/cart',
             {
@@ -48,13 +50,13 @@ onMounted(() => {
         )
         .then(response => {
             cartList.value = response.data
+            totalPrice.value = 0
             cartList.value.forEach(cart => {
-            totalPrice.value = totalPrice.value + cart.price
-        });
+                totalPrice.value = totalPrice.value + cart.price * cart.count
+            });
         })
     }
-})
-
+}
 function itemDetail(id){
     router.push('/detail/' + id)
 }
@@ -62,30 +64,27 @@ function itemAdd(item){
     axios.post('/cart/add',
         {
             userId: user.value.id,
+            itemId: item.id,
             name: item.name,
             image: item.image,
-            price: item.price,            
+            price: item.price,   
+            count: count.value         
         }
     )
     .then(response => {
         cartList.value = response.data
-        totalPrice.value = totalPrice.value + item.price
+        totalPrice.value = totalPrice.value + item.price * count.value
     })
 }
 function cartUpdate(response){
     cartList.value = response
 }
-function totalPriceUpdate(price){
-    console.log('totalPrice'+price)
-    totalPrice.value = totalPrice.value - price
+function totalPriceDeleteUpdate(price, count){
+    totalPrice.value = totalPrice.value - price * count
 }
-function countUp(){
-    count.value++
-}
-function countDown(){
-    if(count.value > 0){
-        count.value--        
-    }
+
+function updateCount(event){
+    count.value = event.target.value
 }
 </script>
 <style scoped>

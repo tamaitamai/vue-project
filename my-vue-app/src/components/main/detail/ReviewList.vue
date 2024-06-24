@@ -38,6 +38,8 @@ import axios from 'axios';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+
+const emit = defineEmits(['averageReview'])
 const props = defineProps(['itemId']);
 const router = useRouter()
 const store = useStore()
@@ -118,6 +120,7 @@ function reviewSubmit(itemId, starCountFlag){
                 }else if(starRange.value === 0.5){
                     starWidth.value = 50 + '%'
                 }
+                emit('averageReview',starAverage.value, beforeStar.value, lastStar.value, afterStar.value, starWidth.value)
             }
         }
     })
