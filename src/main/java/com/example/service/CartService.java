@@ -48,4 +48,12 @@ public class CartService {
 	public void cartCountUpdate(Integer count, Integer id) {
 		cartRepository.cartCountUpdate(count, id);
 	}
+	
+	/**
+	 * 支払い完了時に購入したものをカートからなくす
+	 * @param userId
+	 */
+	public void cartDeleteByPayment(Integer userId) {
+		cartRepository.cartDeleteByPayment(userId);
+	}
 }

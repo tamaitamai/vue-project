@@ -26,6 +26,7 @@ public class CartRepository {
 		cart.setImage(rs.getString("image"));
 		cart.setPrice(rs.getInt("price"));
 		cart.setCount(rs.getInt("count"));
+		cart.setDelFlg(rs.getInt("del_flg"));
 		return cart;
 	};
 	
@@ -35,7 +36,8 @@ public class CartRepository {
 	 * @return
 	 */
 	public List<Cart> cartList(Integer userId){
-		String sql = "SELECT id,user_id,item_id,name,image,price,count FROM carts WHERE user_id = :userId ORDER BY id;";
+		String sql = "SELECT id,user_id,item_id,name,image,price,count,del_flg FROM carts "
+				+ "WHERE user_id = :userId AND del_flg = 0 ORDER BY id;";
 		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		return template.query(sql, params, CART_ROW_MAPPER);
 	}
@@ -45,8 +47,8 @@ public class CartRepository {
 	 * @param cart
 	 */
 	public void cartInsert(Cart cart) {
-		String sql = "INSERT INTO carts(user_id,item_id,name,image,price,count)"
-				+ "VALUES(:userId,:itemId,:name,:image,:price,:count);";
+		String sql = "INSERT INTO carts(user_id,item_id,name,image,price,count,del_flg)"
+				+ "VALUES(:userId,:itemId,:name,:image,:price,:count,0);";
 		SqlParameterSource params = new BeanPropertySqlParameterSource(cart);
 		template.update(sql, params);
 	}
@@ -56,7 +58,8 @@ public class CartRepository {
 	 * @param id
 	 */
 	public void cartDelete(Integer id) {
-		String sql = "DELETE FROM carts WHERE id = :id;";
+//		String sql = "DELETE FROM carts WHERE id = :id;";
+		String sql = "UPDATE carts SET del_flg = 1 WHERE id = :id;";
 		SqlParameterSource params = new MapSqlParameterSource("id",id);
 		template.update(sql, params);
 	}
@@ -69,6 +72,16 @@ public class CartRepository {
 	public void cartCountUpdate(Integer count, Integer id) {
 		String sql = "UPDATE carts SET count = :count WHERE id = :id;";
 		SqlParameterSource params = new MapSqlParameterSource("count", count).addValue("id", id);
+		template.update(sql, params);
+	}
+	
+	/**
+	 * 支払い完了時に購入したものをカートからなくす
+	 * @param userId
+	 */
+	public void cartDeleteByPayment(Integer userId) {
+		String sql = "UPDATE carts SET del_flg = 1 WHERE user_id = :userId;";
+		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		template.update(sql, params);
 	}
 }

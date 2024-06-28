@@ -4,8 +4,10 @@ import LoginView from '../components/user/LoginView.vue'
 import HomeView from '../components/main/HomeView.vue'
 import ItemList from '../components/main/ItemList.vue'
 import ItemDetail from '@/components/main/detail/ItemDetail.vue'
-import CartConfirm from '@/components/main/CartConfirm.vue'
+import CartConfirm from '@/components/main/cart/CartConfirm.vue'
 import ReviewInput from '@/components/main/detail/ReviewInput.vue'
+import HistoryItem from '@/components/main/history/HistoryItem.vue'
+import BuyPage from '@/components/main/cart/BuyPage.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
@@ -43,6 +45,16 @@ const router = new createRouter({
         path: '/reviewInput/:itemId/:editFlag',
         name: 'reviewInput',
         component: ReviewInput
+    },
+    {
+        path: '/history',
+        name: 'history',
+        component: HistoryItem
+    },
+    {
+        path: '/buyPage',
+        name: 'buyPage',
+        component: BuyPage
     }
 ]
 })

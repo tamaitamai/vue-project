@@ -1,5 +1,9 @@
 package com.example.domain;
 
+
+
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class History {
 	private Integer id;
 	private Integer userId;
 	private Integer itemId;
@@ -15,5 +19,5 @@ public class Cart {
 	private String image;
 	private Integer price;
 	private Integer count;
-	private Integer delFlg;
+	private String paymentDate;
 }

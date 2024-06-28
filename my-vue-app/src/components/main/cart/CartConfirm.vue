@@ -11,9 +11,11 @@
                     <span class="count-view">{{ cart.count }}</span>
                     <span class="count-up" @click="countUp(cart)">+</span>
                 </p>
+                <button class="cart-btn" @click="deleteCart(cart)">削除</button>
             </div>
         </div>
         <h2>合計金額: {{ totalPrice }}円</h2>
+        <button @click="payment">購入完了</button>
     </div>
     
 </template>
@@ -32,6 +34,20 @@ const totalPrice = ref(0)
 onMounted(() => {
     countData()
 })
+//カート内の商品を削除
+function deleteCart(cart){
+    axios.post('/cart/delete',
+        {
+            id: cart.id,
+            userId: user.value.id
+        }
+    )
+    .then(response => {                
+        cartList.value = response.data
+        totalPrice.value -= cart.price * cart.count     
+    })  
+}
+//カート一覧を取得
 function countData(){
     axios.post('/cart',
         {
@@ -46,6 +62,7 @@ function countData(){
         });
     })
 }
+//カート内の商品数を更新
 function countUpdate(cart, add){
     axios.post('/cart/countUpdate',
         {
@@ -72,6 +89,16 @@ function countDown(cart){
     if(cart.count > 0){
         countUpdate(cart, -1)
     }
+}
+function payment(){
+    axios.post('/cart/payment',
+        {
+            userId: user.value.id
+        }
+    )
+    .then(()=>{
+        router.push('/buyPage');
+    })
 }
 </script>
 <style scoped>

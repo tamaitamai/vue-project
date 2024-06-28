@@ -19,13 +19,15 @@
         <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
     </div>
     <ReviewList :item-id="item.id" @average-review="onAverageReview"/>
+    <CartAddModal v-show="modalShow" @close-modal="closeModal"/>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import axios from 'axios';
 import ReviewList from './ReviewList.vue';
-import { useStore } from 'vuex';
+import CartAddModal from '../modal/CartAddModal.vue';
 
 const item = ref('')
 const starAverage = ref(0)
@@ -33,6 +35,7 @@ const beforeStar = ref(0)
 const lastStar = ref(0)
 const afterStar = ref(0)
 const starWidth = ref('100%')
+const modalShow = ref(false)
 
 const route = useRoute()
 const router = useRouter()
@@ -49,6 +52,9 @@ onMounted(()=>{
         item.value = response.data
     })
 })
+function closeModal(){
+    modalShow.value = false
+}
 function itemAdd(item){
     if(user.value === null){
         router.push('/login')
@@ -64,6 +70,10 @@ function itemAdd(item){
             count: count.value      
         }
     )
+    .then(() => {
+        modalShow.value=true
+        console.log(modalShow.value)
+    })
 }
 function countUp(){
     count.value++

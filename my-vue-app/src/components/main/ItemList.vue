@@ -14,21 +14,26 @@
                 </div>
             </div>
         </div>
-        <CartList v-show="user !== null" :cartList="cartList" :user="user" :totalPrice="totalPrice" 
+        <CartList v-show="false" :cartList="cartList" :user="user" :totalPrice="totalPrice" 
         @cartUpdate = "cartUpdate" @total-price-delete-update = "totalPriceDeleteUpdate" @cart-list-view = "cartListView"/>
     </div>
+    <CartAddModal v-show="modalShow" @close-modal="closeModal"/>
 </template>
 <script setup>
 import axios from 'axios';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import CartList from './CartList.vue'
 import { useStore } from 'vuex';
+
+import CartList from './cart/CartList.vue'
+import CartAddModal from './modal/CartAddModal.vue';
 
 const itemList = ref('')
 const cartList = ref('')
 const totalPrice = ref(0)
 const count = ref(1)
+const modalShow = ref(false)
+
 const router = useRouter()
 const store = useStore()
 const user = computed(() => store.getters.getUserData)
@@ -74,6 +79,7 @@ function itemAdd(item){
     .then(response => {
         cartList.value = response.data
         totalPrice.value = totalPrice.value + item.price * count.value
+        modalShow.value = true;
     })
 }
 function cartUpdate(response){
@@ -82,9 +88,11 @@ function cartUpdate(response){
 function totalPriceDeleteUpdate(price, count){
     totalPrice.value = totalPrice.value - price * count
 }
-
 function updateCount(event){
     count.value = event.target.value
+}
+function closeModal(){
+    modalShow.value = false
 }
 </script>
 <style scoped>
@@ -98,6 +106,7 @@ function updateCount(event){
 }
 .item-list{
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 .item-title{
@@ -110,7 +119,7 @@ function updateCount(event){
     flex-direction: column;
     border: 1px solid black;
     border-radius: 5px;
-    width: 27%;
+    width: 20%;
     margin: 20px 15px;
 }
 .item-image{

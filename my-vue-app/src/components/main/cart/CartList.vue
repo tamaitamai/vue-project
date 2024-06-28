@@ -64,7 +64,7 @@ function countDown(cart){
     border: 1px solid black;
     border-radius: 10px;
     margin-top: 20px;
-    width: 70%;
+    width: 100%;
 }
 .cart-box{
     display: flex;
