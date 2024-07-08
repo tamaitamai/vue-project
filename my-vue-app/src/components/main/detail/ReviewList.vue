@@ -1,35 +1,43 @@
 <template>
-    <h1>レビュー</h1>
-    <h2>評価：{{ starAverage }}
-        <span class="before-star" v-for="star in beforeStar" :key="star">★</span>
-        <span class="last-star" v-for="star in lastStar" :key="star" :style="{ '--star-width': starWidth }">★</span>
-        <span class="after-star" v-for="star in afterStar" :key="star">★</span>
-    </h2>
-    <div v-for="starCount in starCounts" :key="starCount" class="star-box">
-        <div class="stars">
-            <span v-for="star in starCount.stars" :key="star" class="review-star">
-                ★
-            </span>
-        </div>
-        <span class="star-border" :style="{'background-image': starBorderColor + starCount.border + '%, transparent ' + starCount.border + '%)'}"></span>
-        <div class="star-count">{{ starCount.count }}人</div>
-    </div>
-    <div>{{ reviewTotal }}評価</div>
+    <div class="review-area">
+        <!-- レビュー評価の表示 -->
+        <div class="review-star-box">
+            <h2>カスタマーレビュー</h2>
+            <h2>評価：{{ starAverage }}
+                <span class="before-star" v-for="star in beforeStar" :key="star">★</span>
+                <span class="last-star" v-for="star in lastStar" :key="star" :style="{ '--star-width': starWidth }">★</span>
+                <span class="after-star" v-for="star in afterStar" :key="star">★</span>
+            </h2>
+            <div v-for="starCount in starCounts" :key="starCount" class="star-box">
+                <div class="stars">
+                    <span v-for="star in starCount.stars" :key="star" class="review-star">
+                        ★
+                    </span>
+                </div>
+                <span class="star-border" :style="{'background-image': starBorderColor + starCount.border + '%, transparent ' + starCount.border + '%)'}"></span>
+                <div class="star-count">{{ starCount.count }}人</div>
+            </div>
+            <div>{{ reviewTotal }}評価</div>
 
-    <div v-if = "reviewExists" class="review-input-btn" @click="reviewUrl(false)">商品レビューを書く ></div>
-    <div v-else class="review-input-btn" @click="reviewUrl(true)">レビューを編集</div>
-    <div v-for="review in reviewList" :key = "review.id" class="review-box">
-        <p>{{ review.name }}さん</p>
-        <p>{{ review.comment }}</p>
-        <div>
-            <span v-for="star in review.star" :key="star" class="review-star">
-                ★
-            </span>
+            <div v-if = "reviewExists" class="review-input-btn" @click="reviewUrl(false)">商品レビューを書く ></div>
+            <div v-else class="review-input-btn" @click="reviewUrl(true)">レビューを編集</div>
         </div>
-        <p>{{ review.goodTotal }}人が参考になったと言ってます</p>
-        <div v-if = "user !== null">
-            <p :class="review.reviewGood.userId !== user.id ? {'review-good': true} : {'review-good-check': true}"
-            @click="reviewGood(review)">参考になった</p>
+        <!-- レビュー一覧 -->
+        <div class="review-list">
+            <div v-for="review in reviewList" :key = "review.id" class="review-box">
+                <div>👤{{ review.name }}さん</div>
+                <div>
+                    <span v-for="star in review.star" :key="star" class="review-star">
+                        ★
+                    </span>
+                </div>
+                <div>{{ review.comment }}</div>
+                <div style="margin-top: 10px;">{{ review.goodTotal }}人が参考になったと言ってます</div>
+                <div v-if = "user !== null">
+                    <p :class="review.reviewGood.userId !== user.id ? {'review-good': true} : {'review-good-check': true}"
+                    @click="reviewGood(review)">参考になった</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -154,8 +162,20 @@ watch(() => props.itemId, (newVal) => {
 });
 </script>
 <style scoped>
+.review-area{
+    display: flex;
+}
+.review-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+/* レビュー平均の☆の表示 */
 .before-star{
-    color: rgba(237, 237, 10, 0.889);
+    /* color: rgba(237, 237, 10, 0.889); */
+    color: orange;
 }
 .after-star{
     color: lightgray;
@@ -172,7 +192,8 @@ watch(() => props.itemId, (newVal) => {
     top: 0;
     width: var(--star-width);
     overflow: hidden;
-    color: rgba(237, 237, 10, 0.889);
+    /* color: rgba(237, 237, 10, 0.889); */
+    color: orange;
 }
 .star-box{
     display: flex;
@@ -191,6 +212,7 @@ watch(() => props.itemId, (newVal) => {
     margin-right: 10px;
     /* background-image: linear-gradient(to right, rgb(220, 28, 28) 50%, transparent 50%); */
 }
+/* レビュー投稿ボタン */
 .review-input-btn{
     padding: 10px;
     border: 1px solid black;
@@ -201,26 +223,27 @@ watch(() => props.itemId, (newVal) => {
 .review-input-btn:hover, .review-good:hover{
     border: 1px solid red
 }
+/* レビューの中身の表示 */
 .review-box{
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
-    border: 1px solid black;
-    border-radius: 10px;
     margin-top: 20px;
-    width: 50%;
+    width: 70%;
 }
 .review-star{
-    color: rgba(237, 237, 10, 0.889);
+    /* color: rgba(237, 237, 10, 0.889); */
+    color: orange;
     font-size: 20px;
 }
 .review-good{
     border: 1px solid black;
     padding: 5px;
+    width: 100px;
 }
 .review-good-check{
     border: 1px solid red;
     padding: 5px;
+    width: 100px;
 }
 </style>

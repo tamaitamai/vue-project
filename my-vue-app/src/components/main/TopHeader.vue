@@ -5,10 +5,10 @@
                 <div style="margin: 0px 10px;">ホーム</div>
             </RouterLink>
             <div class="search-box">
-                <input type="text" class="search-input">
-                <p class="search-btn">🔎</p>
+                <input type="text" class="search-input" v-model="itemName">
+                <p class="search-btn" @click="itemSeach">🔎</p>
             </div>
-            <RouterLink to="/item">商品一覧</RouterLink>
+            <!-- <RouterLink to="/item">商品一覧</RouterLink> -->
             <div class="select-box">
                 <RouterLink :to="!isShow ? '/cartConfirm' : '/login'" style="font-size: 25px">🛒</RouterLink>
                 カート
@@ -37,19 +37,29 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import axios from 'axios';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-const store = useStore();
+const itemName = ref('');
 const user = computed(() => store.getters.getUserData);
 const isShow = computed(() => user.value === null);
+const store = useStore();
 const router = useRouter()
 
-// watch(isShow, ()=>{
-//     console.log('watch: '+isShow.value)
-// })
-
+function itemSeach(){
+    axios.post('/item/search',
+        {
+            name: itemName.value
+        }
+    )
+    .then(response=>{
+        itemName.value = ''
+        router.push('/item')
+        store.dispatch('updateItemListData',response.data);
+    })
+}
 function logOut() {
   store.dispatch('updateUserData', null);
   router.push('/login')
@@ -87,6 +97,7 @@ header{
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     background-color: rgb(14, 199, 137);
     width: 35px;
     height: 35px;

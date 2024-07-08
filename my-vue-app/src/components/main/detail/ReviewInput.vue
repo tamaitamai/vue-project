@@ -108,7 +108,8 @@ function reviewInput(){
     font-size: 20px;
 }
 .star{
-    color: rgba(237, 237, 10, 0.889);;
+    /* color: rgba(237, 237, 10, 0.889); */
+    color: orange;
 }
 .review-btn{
     margin: 10px 0px;

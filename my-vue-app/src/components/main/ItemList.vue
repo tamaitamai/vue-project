@@ -3,14 +3,28 @@
         <div class="item-area">
             <h1>アイドル風景写真一覧</h1>
             <div class="item-list">
-                <div v-for = "item in itemList" :key = "item.id" class="item-box">
-                    <p>{{ item.name }}</p>
-                    <img :src="'/image/' + item.image" class="item-image" @click = "itemDetail(item.id)">
-                    <p>{{ item.price + '円' }}</p>
-                    <select @change="updateCount">
-                        <option  v-for="num in 50" :key="num" :value="num">{{num}}</option>
-                    </select>
-                    <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
+                <div v-for = "item in itemList" :key = "item.id" class="item-box" @click = "itemDetail(item.id)">
+                    <div class="item-image-area">
+                        <img :src="'/image/' + item.image" class="item-image">
+                    </div>
+                    <div class="item-info-area">
+                        <div style="font-size: 20px; margin-top: 10px;">{{ item.name }}</div>
+                        <div>{{ item.comment }}</div>
+                        <div>
+                            <span>☆</span>
+                            <span>☆</span>
+                            <span>☆</span>
+                            <span>☆</span>
+                            <span>☆</span>
+                        </div>
+                        <div style="font-size: 30px;">{{ '￥'+item.price }}</div>
+                        <select @change.stop="updateCount" class="item-count" @click.stop>
+                            <option  v-for="num in 50" :key="num" :value="num">{{num}}</option>
+                        </select>
+                    </div>
+                    <div class="item-btn-area" @click.stop>
+                        <button class="item-btn" @click.stop="itemAdd(item)">カートに追加</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,7 +35,7 @@
 </template>
 <script setup>
 import axios from 'axios';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -37,13 +51,19 @@ const modalShow = ref(false)
 const router = useRouter()
 const store = useStore()
 const user = computed(() => store.getters.getUserData)
+const searchItemList = computed(() => store.getters.getItemListData)
 
 onMounted(() => {
-    axios.get('/item')
-    .then(response => {
-        itemList.value = response.data   
-    })
+    // axios.get('/item')
+    // .then(response => {
+    //     itemList.value = response.data
+    // })
+    itemList.value = searchItemList.value
     cartListView()
+})
+//商品を検索したときに一覧の更新
+watch(searchItemList, ()=>{
+    itemList.value = searchItemList.value
 })
 
 function cartListView(){
@@ -62,9 +82,11 @@ function cartListView(){
         })
     }
 }
+//商品詳細へ移動
 function itemDetail(id){
     router.push('/detail/' + id)
 }
+//商品をカートに追加
 function itemAdd(item){
     axios.post('/cart/add',
         {
@@ -88,9 +110,11 @@ function cartUpdate(response){
 function totalPriceDeleteUpdate(price, count){
     totalPrice.value = totalPrice.value - price * count
 }
+//商品の購入数の更新
 function updateCount(event){
     count.value = event.target.value
 }
+//モーダルを閉じる
 function closeModal(){
     modalShow.value = false
 }
@@ -115,35 +139,55 @@ function closeModal(){
 .item-box{
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
-    border: 1px solid black;
+    border: 1px solid rgba(77, 74, 74, 0.19);
     border-radius: 5px;
     width: 20%;
     margin: 20px 15px;
+    cursor: pointer;
+}
+/* 商品画像と情報 */
+.item-image-area{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+    background-color: rgba(180, 176, 176, 0.19);
 }
 .item-image{
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 100%;
 }
-.item-image:hover{
-    opacity: 0.7;
-}
-.item-btn{
-    margin-bottom: 10px;
+.item-info-area{
+    margin-left: 20px;
 }
 .item-count{
-    border: 1px solid black;
-    border-radius: 5px;
-}
-.count-view{
-    background-color: gainsboro;
-    padding: 0px 10px;
-    border: 1px solid black;
-}
-.count-down,.count-up{
-    margin: 10px;
-    font-size: 20x;
+    font-size: 20px;
+    margin: 10px 0px;
+    padding: 2px;
     cursor: pointer;
+}
+.item-count:hover{
+    opacity: 0.5;
+}
+/* 商品追加ボタン */
+.item-btn-area{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: default
+}
+.item-btn{
+    cursor: pointer;
+    width: 70%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    background-color: rgb(252 249 4 / 95%);
+    margin: 5px 0px;
+    font-size: 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+.item-btn:hover{
+    opacity: 0.7;
 }
 </style>

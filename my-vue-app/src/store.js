@@ -3,7 +3,8 @@ import { createStore } from 'vuex';
 const store = createStore({
     state: {
         responseData: null,
-        userData: null
+        userData: null,
+        itemListData: null
     },
     mutations: {
         setResponseData(state, data) {
@@ -11,6 +12,9 @@ const store = createStore({
         },
         setUserData(state,data){
             state.userData = data
+        },
+        setItemListData(state,data){
+            state.itemListData = data;
         }
     },
     actions: {
@@ -20,10 +24,14 @@ const store = createStore({
         updateUserData({ commit }, data) {
             commit('setUserData', data);
         },
+        updateItemListData({ commit },data){
+            commit('setItemListData',data);
+        }
     },
     getters: {
         getResponseData: (state) => state.responseData,
-        getUserData: (state) => state.userData
+        getUserData: (state) => state.userData,
+        getItemListData: (state) => state.itemListData
     },
 });
 

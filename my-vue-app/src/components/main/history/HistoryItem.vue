@@ -23,7 +23,8 @@
                         <RouterLink :to="'/detail/' + history.itemId" class="history-name">{{ history.name }}</RouterLink>
                     </div>
                     <div class="bottom-right">
-                        <button class="review-btn" @click="reviewUrl(history.itemId, false)">商品レビューを書く</button>
+                        <button class="review-btn" @click="reviewUrl(history.itemId)">商品レビューを書く</button>
+                        <!-- <button class="review-btn" @click="reviewUrl(history.itemId)" v-else>商品レビューを書く</button> -->
                     </div>
                 </div>
             </div>
@@ -52,11 +53,46 @@ onMounted(()=>{
         historyList.value = response.data
     })
 })
-function reviewUrl(itemId, editFlg){
-    router.push('/reviewInput/' + itemId + "/" + editFlg)
+// function reviewExists(itemId){
+//     const exists = ref(false)
+//     axios.post('/review',
+//         {
+//             itemId: itemId,
+//             userId: user.value.id
+//         }
+//     )
+//     .then(response => {
+//         const reviewList = ref(response.data)
+//         for(let i=0; i<reviewList.value.length;i++){
+//             if(reviewList.value[0].userId == user.value.id){
+//                 exists.value = true;
+//                 break;
+//             }
+//         }
+//         return exists;
+//     })
+// }
+function reviewUrl(itemId){
+    axios.post('/review',
+        {
+            itemId: itemId,
+            userId: user.value.id
+        }
+    )
+    .then(response => {
+        const reviewList = ref(response.data)
+        const editFlg = ref(false)
+        reviewList.value.forEach(review => {
+            if(review.userId === user.value.id){
+                editFlg.value = true
+            }
+        });
+        router.push('/reviewInput/' + itemId + "/" + editFlg.value)
+    })
 }
 </script>
 <style scoped>
+/**履歴一覧全体の装飾 */
 .history-area,.history-list{
     display: flex;
     justify-content: center;
@@ -74,6 +110,7 @@ function reviewUrl(itemId, editFlg){
     border-radius: 10px;
     margin-bottom: 20px;
 }
+/**各履歴詳細の上側の装飾 */
 .history-top{
     border-bottom: 1px solid rgba(77, 74, 74, 0.19);
     background-color: rgba(180, 176, 176, 0.19);
@@ -83,6 +120,7 @@ function reviewUrl(itemId, editFlg){
     display: flex;
     float: left;
 }
+/**各履歴詳細の下側の装飾 */
 .history-bottom{
     padding: 10px;
 }
@@ -102,6 +140,7 @@ function reviewUrl(itemId, editFlg){
     font-size: 20px;
     margin-left: 20px;
 }
+/**レビューボタン */
 .review-btn{
     padding: 5px 30px;
     font-size: 15px;
