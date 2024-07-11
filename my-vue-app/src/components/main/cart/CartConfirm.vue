@@ -1,23 +1,31 @@
 <template>
     <div class="cart-area">
-        <h1>カートの中身の確認</h1>
         <div class="cart-list">
+            <h1>ショッピングカート</h1>
             <div v-for="cart in cartList" :key="cart.id" class="cart-box"> 
-                <p>{{ cart.name }}</p>
                 <img :src="'/image/' + cart.image" class="cart-image" @click = "itemDetail(cart.itemId)">
-                <p>{{ cart.price * cart.count }}円</p>
-                <p class="item-count">
-                    <span class="count-down" @click="countDown(cart)">-</span>
-                    <span class="count-view">{{ cart.count }}</span>
-                    <span class="count-up" @click="countUp(cart)">+</span>
-                </p>
-                <button class="cart-btn" @click="deleteCart(cart)">削除</button>
+                <div class="cart-info">
+                    <div class="cart-info-top">
+                        <div class="cart-name">{{ cart.name }}</div>
+                        <div class="cart-price">￥{{ cart.price }}</div>
+                    </div>
+                    <div class="cart-info-bottom">
+                        <select @change="countSelect($event,cart)" class="cart-count">
+                            <option v-for="num in 50" :key="num" :value="num" :selected="num===cart.count">数量：{{ num }}</option>
+                        </select>
+                        <div class="cart-delete" @click="deleteCart(cart)">削除</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <h2>合計金額: {{ totalPrice }}円</h2>
-        <button @click="payment">購入完了</button>
+        <div class="cart-price-box">
+            <div>小計({{ totalCount }}個の商品)</div>
+            <div>：￥{{ totalPrice }}</div>
+            <div class="cart-price-btn-box">
+                <button @click="payment" class="cart-price-btn">購入完了</button>
+            </div>
+        </div>
     </div>
-    
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
@@ -30,6 +38,7 @@ const store = useStore()
 const user = computed(() => store.getters.getUserData)
 const cartList = ref('')
 const totalPrice = ref(0)
+const totalCount = ref(0)
 
 onMounted(() => {
     countData()
@@ -44,7 +53,8 @@ function deleteCart(cart){
     )
     .then(response => {                
         cartList.value = response.data
-        totalPrice.value -= cart.price * cart.count     
+        totalPrice.value -= cart.price * cart.count
+        totalCount.value -= cart.count
     })  
 }
 //カート一覧を取得
@@ -56,40 +66,36 @@ function countData(){
     )
     .then(response => {
         cartList.value = response.data
-        totalPrice.value = 0
-        cartList.value.forEach(cart => {
-            totalPrice.value = totalPrice.value + cart.price * cart.count
-        });
+        totalUpdate(response.data)
     })
 }
+//合計金額と合計購入数を更新
+function totalUpdate(cartList){
+    totalPrice.value = 0
+    totalCount.value = 0
+    cartList.forEach(cart => {
+        totalPrice.value = totalPrice.value + cart.price * cart.count
+        totalCount.value = totalCount.value + cart.count
+    });
+}
+//商品詳細を表示
+function itemDetail(id){
+    router.push('/detail/' + id)
+}
 //カート内の商品数を更新
-function countUpdate(cart, add){
+function countSelect(event,cart){
     axios.post('/cart/countUpdate',
         {
             id: cart.id,
-            count: cart.count + add,
+            count: event.target.value,
             userId: user.value.id
         }
     )
     .then(response => {
-        cartList.value = response.data
-        totalPrice.value = 0
-        cartList.value.forEach(cart => {
-            totalPrice.value = totalPrice.value + cart.price * cart.count
-        });
+        totalUpdate(response.data)
     })
 }
-function itemDetail(id){
-    router.push('/detail/' + id)
-}
-function countUp(cart){ 
-    countUpdate(cart, 1)
-}
-function countDown(cart){
-    if(cart.count > 0){
-        countUpdate(cart, -1)
-    }
-}
+//商品を購入
 function payment(){
     axios.post('/cart/payment',
         {
@@ -102,42 +108,87 @@ function payment(){
 }
 </script>
 <style scoped>
+.cart-area{
+    display: flex;
+}
+.cart-list{
+    display: flex;
+    flex-direction: column;
+    width: 80%
+}
+.cart-box{
+    width: 90%;
+    display: flex;
+    border-top: 1px solid rgba(77, 74, 74, 0.19);    
+}
 .cart-image{
-    width: 80%;
-    height: 80%;
+    width: 200px;
+    height: 120px;
+    padding: 10px;
 }
 .cart-image:hover{
     opacity: 0.7;
 }
-.cart-area, .cart-box{
+.cart-info{  
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
 }
-.cart-box{
-    width: 30%;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin: 10px;
-}
-.cart-list{
+/* カート情報の上側 */
+.cart-info-top{
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
 }
-.item-count{
-    border: 1px solid black;
+.cart-name{
+    margin-right: 20px;
+    font-size: 20px;
+}
+.cart-price{
+    font-size: 20px;
+    margin-right: 20px;
+}
+/* カート情報の下側 */
+.cart-info-bottom{
+    display: flex;
+    align-items: center;
+    margin-top: auto;    
+}
+.cart-count{
     border-radius: 5px;
-    width: 90px;
+    padding: 5px;
+    background-color: rgba(180, 176, 176, 0.19);
+    margin: 0px 20px 10px 0px;
 }
-.count-view{
-    background-color: gainsboro;
-    padding: 0px 10px;
-    border: 1px solid black;
+.cart-delete:hover{
+    color: red;
 }
-.count-down,.count-up{
-    margin: 10px;
-    font-size: 20x;
+
+/* 価格情報 */
+.cart-price-box{
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    width: 20%;
+    height: 100%;
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.cart-price-btn-box{
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+.cart-price-btn{
     cursor: pointer;
+    width: 90%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    background-color: rgb(252 249 4 / 95%);
+    font-size: 20px;
+    border-radius: 50px;
+}
+.cart-price-btn:hover{
+    opacity: 0.7;
 }
 </style>

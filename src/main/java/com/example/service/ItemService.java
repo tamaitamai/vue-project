@@ -31,4 +31,8 @@ public class ItemService {
 	public Item itemDetail(Integer id) {
 		return itemRepository.itemDetail(id);
 	}
+	
+	public List<Item> itemSearch(String name) {
+		return itemRepository.itemSearch(name);
+	}
 }

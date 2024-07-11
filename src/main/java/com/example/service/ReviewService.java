@@ -78,4 +78,8 @@ public class ReviewService {
 	public void reviewGoodDelete(Integer reviewId, Integer userId) {
 		reviewRepostitory.reviewGoodDelete(reviewId, userId);
 	}	
+	
+	public boolean reviewExists(Integer userId,Integer itemId) {
+		return reviewRepostitory.reviewExists(userId, itemId);
+	}
 }

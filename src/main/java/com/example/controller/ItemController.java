@@ -27,4 +27,9 @@ public class ItemController {
 	public Item itemDetail(@RequestBody Item item) {
 		return itemService.itemDetail(item.getId());
 	}
+	
+	@PostMapping("/search")
+	public List<Item> itemSearch(@RequestBody Item item){
+		return itemService.itemSearch(item.getName());
+	}
 }

@@ -189,4 +189,16 @@ public class ReviewRepostitory {
 		SqlParameterSource params = new MapSqlParameterSource("reviewId",reviewId).addValue("userId", userId);
 		template.update(sql, params);
 	}
+	
+	/**
+	 * ユーザーがすでにレビューを投稿済みかを確認
+	 * @param userId
+	 * @param itemId
+	 * @return
+	 */
+	public boolean reviewExists(Integer userId, Integer itemId) {
+		String sql = "SELECT EXISTS(SELECT * FROM reviews WHERE user_id=:userId and item_id=:itemId);";
+		SqlParameterSource params = new MapSqlParameterSource("userId",userId).addValue("itemId", itemId);
+		return template.queryForObject(sql, params, boolean.class);
+	}
 }

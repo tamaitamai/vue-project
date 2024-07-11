@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="item-area">
-            <h1>アイドル風景写真一覧</h1>
+            <!-- <h1>アイドル風景写真一覧</h1> -->
             <div class="item-list">
                 <div v-for = "item in itemList" :key = "item.id" class="item-box" @click = "itemDetail(item.id)">
                     <div class="item-image-area">
@@ -18,7 +18,7 @@
                             <span>☆</span>
                         </div>
                         <div style="font-size: 30px;">{{ '￥'+item.price }}</div>
-                        <select @change.stop="updateCount" class="item-count" @click.stop>
+                        <select @change.stop="countUpdate" class="item-count" @click.stop>
                             <option  v-for="num in 50" :key="num" :value="num">{{num}}</option>
                         </select>
                     </div>
@@ -54,11 +54,14 @@ const user = computed(() => store.getters.getUserData)
 const searchItemList = computed(() => store.getters.getItemListData)
 
 onMounted(() => {
-    // axios.get('/item')
-    // .then(response => {
-    //     itemList.value = response.data
-    // })
-    itemList.value = searchItemList.value
+    axios.get('/item')
+    .then(response => {
+        if(searchItemList.value === null){
+            itemList.value = response.data
+        }else{
+            itemList.value = searchItemList.value
+        }
+    })
     cartListView()
 })
 //商品を検索したときに一覧の更新
@@ -111,7 +114,7 @@ function totalPriceDeleteUpdate(price, count){
     totalPrice.value = totalPrice.value - price * count
 }
 //商品の購入数の更新
-function updateCount(event){
+function countUpdate(event){
     count.value = event.target.value
 }
 //モーダルを閉じる

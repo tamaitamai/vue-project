@@ -195,6 +195,7 @@ watch(() => props.itemId, (newVal) => {
     /* color: rgba(237, 237, 10, 0.889); */
     color: orange;
 }
+/* レビュー数一覧 */
 .star-box{
     display: flex;
     align-items: center;

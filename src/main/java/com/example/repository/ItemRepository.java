@@ -45,4 +45,15 @@ public class ItemRepository {
 		SqlParameterSource params = new MapSqlParameterSource("id",id);
 		return template.queryForObject(sql, params, ITEM_ROW_MAPPER);
 	}
+	
+	/**
+	 * 商品検索
+	 * @param name
+	 * @return
+	 */
+	public List<Item> itemSearch(String name) {
+		String sql = "SELECT * FROM items WHERE name LIKE :name;";
+		SqlParameterSource params = new MapSqlParameterSource("name","%"+name+"%");
+		return template.query(sql, params, ITEM_ROW_MAPPER);
+	}
 }

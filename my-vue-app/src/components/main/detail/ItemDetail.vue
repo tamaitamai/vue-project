@@ -13,12 +13,12 @@
         </div>
         <div class="price-box">
             <div class="item-cart-price">￥{{ item.price }}</div>
-            <div class="item-count">
-                <span class="count-down" @click="countDown()">-</span>
-                <span class="count-view">{{ count }}</span>
-                <span class="count-up" @click="countUp()">+</span>     
+            <div class="price-add-box">
+                <select name="" @change="countUpdate" class="item-count">
+                    <option v-for="num in 50" :value="num" :key="num">数量：{{ num }}</option>
+                </select>
+                <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
             </div>
-            <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
         </div>
     </div>
     <ReviewList :item-id="item.id" @average-review="onAverageReview"/>
@@ -78,13 +78,8 @@ function itemAdd(item){
         console.log(modalShow.value)
     })
 }
-function countUp(){
-    count.value++
-}
-function countDown(){
-    if(count.value > 0){
-        count.value--        
-    }
+function countUpdate(event){
+    count.value = event.target.value;
 }
 function onAverageReview(average, before, last, after, width){
     starAverage.value = average
@@ -124,32 +119,28 @@ function onAverageReview(average, before, last, after, width){
     padding: 20px;
     width: 15%;
     display: flex;
-    align-items: center;
     flex-direction: column;
 }
 .item-cart-price{
-    font-size: 20px;
+    font-size: 30px;
+}
+.price-add-box{
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 .item-count{
-    border: 1px solid black;
+    width: 95%;
     border-radius: 5px;
-    width: 90px;
-}
-.count-view{
-    background-color: gainsboro;
-    padding: 0px 10px;
-    border: 1px solid black;
-}
-.count-down,.count-up{
-    margin: 10px;
-    font-size: 20x;
-    cursor: pointer;
+    padding: 5px;
+    background-color: rgba(180, 176, 176, 0.19);
+    margin-bottom: 20px;
 }
 .item-btn{
     width:95%;
     border: 1px solid rgba(77, 74, 74, 0.19);
-    background-color: rgb(252 249 4 / 95%);
-    margin: 5px 0px;
+    background-color: rgb(252 249 4 / 95%);    
     font-size: 20px;
     border-radius: 50px;
 }
