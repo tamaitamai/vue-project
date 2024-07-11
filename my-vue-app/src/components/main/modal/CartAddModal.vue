@@ -12,7 +12,7 @@ function closeModal(){
     emit('closeModal');
 }
 </script>
-<style>
+<style scoped>
 .modal-area,.modal-box{
     display: flex;
     justify-content: center;

@@ -10,12 +10,9 @@
                     <div class="item-info-area">
                         <div style="font-size: 20px; margin-top: 10px;">{{ item.name }}</div>
                         <div>{{ item.comment }}</div>
-                        <div>
-                            <span>☆</span>
-                            <span>☆</span>
-                            <span>☆</span>
-                            <span>☆</span>
-                            <span>☆</span>
+                        <div class="item-star-box">
+                            <StarView :itemId="item.id" @review-total-count="reviewTotalCountView"/>
+                            <div class="item-star-average" v-if="item.totalReviewCount != 0">{{ item.totalReviewCount }}</div>
                         </div>
                         <div style="font-size: 30px;">{{ '￥'+item.price }}</div>
                         <select @change.stop="countUpdate" class="item-count" @click.stop>
@@ -41,11 +38,13 @@ import { useStore } from 'vuex';
 
 import CartList from './cart/CartList.vue'
 import CartAddModal from './modal/CartAddModal.vue';
+import StarView from './star/StarView.vue';
 
 const itemList = ref('')
 const cartList = ref('')
 const totalPrice = ref(0)
 const count = ref(1)
+const reviewTotalCount = ref(0)
 const modalShow = ref(false)
 
 const router = useRouter()
@@ -113,13 +112,17 @@ function cartUpdate(response){
 function totalPriceDeleteUpdate(price, count){
     totalPrice.value = totalPrice.value - price * count
 }
-//商品の購入数の更新
+// 商品の購入数の更新
 function countUpdate(event){
     count.value = event.target.value
 }
-//モーダルを閉じる
+// モーダルを閉じる
 function closeModal(){
     modalShow.value = false
+}
+// レビューした合計人数
+function reviewTotalCountView(totalCount){
+    reviewTotalCount.value = totalCount
 }
 </script>
 <style scoped>
@@ -141,7 +144,6 @@ function closeModal(){
 }
 .item-box{
     display: flex;
-    justify-content: center;
     flex-direction: column;
     border: 1px solid rgba(77, 74, 74, 0.19);
     border-radius: 5px;
@@ -164,6 +166,13 @@ function closeModal(){
 .item-info-area{
     margin-left: 20px;
 }
+.item-star-box{
+    display: flex;
+    align-items: center;
+}
+.item-star-average{
+    margin-left: 5px;
+}
 .item-count{
     font-size: 20px;
     margin: 10px 0px;
@@ -178,7 +187,8 @@ function closeModal(){
     display: flex;
     justify-content: center;
     width: 100%;
-    cursor: default
+    cursor: default;
+    margin-top: auto;
 }
 .item-btn{
     cursor: pointer;

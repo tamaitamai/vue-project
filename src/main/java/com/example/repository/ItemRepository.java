@@ -23,6 +23,17 @@ public class ItemRepository {
 		item.setImage(rs.getString("image"));
 		item.setComment(rs.getString("comment"));
 		item.setPrice(rs.getInt("price"));
+		item.setTotalReviewCount(rs.getInt("totalReviewCount"));
+		return item;
+	};
+	
+	private static RowMapper<Item> ITEM_DETAIL_ROW_MAPPER = (rs,i) ->{
+		Item item = new Item();
+		item.setId(rs.getInt("id"));
+		item.setName(rs.getString("name"));
+		item.setImage(rs.getString("image"));
+		item.setComment(rs.getString("comment"));
+		item.setPrice(rs.getInt("price"));		
 		return item;
 	};
 	
@@ -31,7 +42,10 @@ public class ItemRepository {
 	 * @return
 	 */
 	public List<Item> itemList(){
-		String sql = "SELECT id,name,image,comment,price FROM items;";
+//		String sql = "SELECT id,name,image,comment,price FROM items;";
+		String sql = "SELECT i.*,r.totalReviewCount FROM items as i LEFT JOIN "
+				+ "(SELECT item_id,count(*) as totalReviewCount FROM reviews GROUP BY item_id) as r "
+				+ "ON i.id = r.item_id ORDER BY id;";
 		return template.query(sql, ITEM_ROW_MAPPER);
 	}
 	
@@ -43,7 +57,7 @@ public class ItemRepository {
 	public Item itemDetail(Integer id) {
 		String sql = "SELECT id,name,image,comment,price FROM items WHERE id = :id;";
 		SqlParameterSource params = new MapSqlParameterSource("id",id);
-		return template.queryForObject(sql, params, ITEM_ROW_MAPPER);
+		return template.queryForObject(sql, params, ITEM_DETAIL_ROW_MAPPER);
 	}
 	
 	/**
@@ -52,7 +66,10 @@ public class ItemRepository {
 	 * @return
 	 */
 	public List<Item> itemSearch(String name) {
-		String sql = "SELECT * FROM items WHERE name LIKE :name;";
+//		String sql = "SELECT * FROM items WHERE name LIKE :name;";
+		String sql = "SELECT i.*,r.totalReviewCount FROM items as i LEFT JOIN "
+				+ "(SELECT item_id,count(*) as totalReviewCount FROM reviews GROUP BY item_id) as r "
+				+ "ON i.id = r.item_id WHERE i.name LIKE :name ORDER BY id;";
 		SqlParameterSource params = new MapSqlParameterSource("name","%"+name+"%");
 		return template.query(sql, params, ITEM_ROW_MAPPER);
 	}

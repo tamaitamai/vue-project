@@ -3,11 +3,15 @@
         <!-- レビュー評価の表示 -->
         <div class="review-star-box">
             <h2>カスタマーレビュー</h2>
-            <h2>評価：{{ starAverage }}
+            <!-- <h2>評価：{{ starAverage }}
                 <span class="before-star" v-for="star in beforeStar" :key="star">★</span>
                 <span class="last-star" v-for="star in lastStar" :key="star" :style="{ '--star-width': starWidth }">★</span>
                 <span class="after-star" v-for="star in afterStar" :key="star">★</span>
-            </h2>
+            </h2> -->
+            <div class="item-star-box">
+                <StarView :itemId="itemId" @star-average="starAverageView"/>
+                <div class="item-star-average">5つのうち{{ starAverage }}つ</div>
+            </div>
             <div v-for="starCount in starCounts" :key="starCount" class="star-box">
                 <div class="stars">
                     <span v-for="star in starCount.stars" :key="star" class="review-star">
@@ -17,7 +21,7 @@
                 <span class="star-border" :style="{'background-image': starBorderColor + starCount.border + '%, transparent ' + starCount.border + '%)'}"></span>
                 <div class="star-count">{{ starCount.count }}人</div>
             </div>
-            <div>{{ reviewTotal }}評価</div>
+            <div>{{ reviewTotal }}件の評価</div>
 
             <div v-if = "reviewExists" class="review-input-btn" @click="reviewUrl(false)">商品レビューを書く ></div>
             <div v-else class="review-input-btn" @click="reviewUrl(true)">レビューを編集</div>
@@ -47,7 +51,9 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-const emit = defineEmits(['averageReview'])
+import StarView from '../star/StarView.vue';
+
+// const emit = defineEmits(['averageReview'])
 const props = defineProps(['itemId']);
 const router = useRouter()
 const store = useStore()
@@ -61,9 +67,9 @@ const starBorderColor = ref('linear-gradient(to right, rgb(220, 28, 28) ')
 const starMap = new Map()
 const reviewTotal = ref(0)
 const starAverage = ref(0)
-const beforeStar = ref(0)
-const lastStar = ref(0)
-const afterStar = ref(0)
+// const beforeStar = ref(0)
+// const lastStar = ref(0)
+// const afterStar = ref(0)
 const starCounts = ref([
     { stars: 1, count: 0, border: 0},
     { stars: 2, count: 0, border: 0},
@@ -71,7 +77,7 @@ const starCounts = ref([
     { stars: 4, count: 0, border: 0},
     { stars: 5, count: 0, border: 0}
 ])
-const starWidth = ref('100%');
+// const starWidth = ref('100%');
 
 //レビュー一覧をデータベースから取得
 function reviewSubmit(itemId, starCountFlag){
@@ -107,29 +113,29 @@ function reviewSubmit(itemId, starCountFlag){
             for(const key of starMap.keys()){
                 starCounts.value[key-1].count = starMap.get(key)
                 reviewTotal.value += starMap.get(key)
-                starAverage.value += starMap.get(key) * key
+                // starAverage.value += starMap.get(key) * key
             }
             for(const key of starMap.keys()){
                 starCounts.value[key-1].border = starMap.get(key)/reviewTotal.value * 100
             }
-            if(reviewTotal.value !== 0){
-                starAverage.value = Math.round(starAverage.value/reviewTotal.value * 10)/10
-                beforeStar.value = Math.floor(starAverage.value)
-                lastStar.value = Math.ceil(starAverage.value) - beforeStar.value
-                afterStar.value = 5 - beforeStar.value - lastStar.value                
+            // if(reviewTotal.value !== 0){
+            //     starAverage.value = Math.round(starAverage.value/reviewTotal.value * 10)/10
+            //     beforeStar.value = Math.floor(starAverage.value)
+            //     lastStar.value = Math.ceil(starAverage.value) - beforeStar.value
+            //     afterStar.value = 5 - beforeStar.value - lastStar.value                
                 
-                const starRange = ref(starAverage.value - beforeStar.value)
-                if(starRange.value === 0){
-                    starWidth.value = '100%'
-                }else if(starRange.value < 0.5){
-                    starWidth.value = 40 + starRange.value * 10 + '%'
-                }else if(starRange.value > 0.5){
-                    starWidth.value = 50 + starRange.value * 10 + '%'
-                }else if(starRange.value === 0.5){
-                    starWidth.value = 50 + '%'
-                }
-                emit('averageReview',starAverage.value, beforeStar.value, lastStar.value, afterStar.value, starWidth.value)
-            }
+            //     const starRange = ref(starAverage.value - beforeStar.value)
+            //     if(starRange.value === 0){
+            //         starWidth.value = '100%'
+            //     }else if(starRange.value < 0.5){
+            //         starWidth.value = 40 + starRange.value * 10 + '%'
+            //     }else if(starRange.value > 0.5){
+            //         starWidth.value = 50 + starRange.value * 10 + '%'
+            //     }else if(starRange.value === 0.5){
+            //         starWidth.value = 50 + '%'
+            //     }
+            //     emit('averageReview',starAverage.value, beforeStar.value, lastStar.value, afterStar.value, starWidth.value)
+            // }
         }
     })
 }
@@ -151,6 +157,10 @@ function reviewGood(review){
     .then(() => {
         reviewSubmit(itemId.value, false)
     })
+}
+// レビューの平均値
+function starAverageView(average){
+    starAverage.value = average;
 }
 //レビュー一覧を確保
 onMounted(() => {
@@ -200,6 +210,13 @@ watch(() => props.itemId, (newVal) => {
     display: flex;
     align-items: center;
     width: 400px;
+}
+.item-star-box{
+    display: flex;
+    align-items: center;
+}
+.item-star-average{
+    margin-left: 5px;
 }
 .stars {
     white-space: nowrap;

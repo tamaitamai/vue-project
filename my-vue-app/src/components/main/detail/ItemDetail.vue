@@ -1,12 +1,16 @@
 <template>
     <div class="item-detail">
-        <img :src="'/image/' + item.image" class="item-image">
+        <img :src="'/image/' + item.image" class="item-image" @click="openImage">
         <div class="detail-box">
             <div class="item-name">{{ item.name }}</div>
-            <div class="average-star">{{ starAverage }}
+            <!-- <div class="average-star">{{ starAverage }}
                 <span class="before-star" v-for="star in beforeStar" :key="star">★</span>
                 <span class="last-star" v-for="star in lastStar" :key="star" :style="{ '--star-width': starWidth }">★</span>
                 <span class="after-star" v-for="star in afterStar" :key="star">★</span>
+            </div> -->
+            <div class="item-star-box">
+                <div class="item-star-average">{{ starAverage }}</div>
+                <StarView :itemId="item.id" @star-average="starAverageView"/>
             </div>
             <div class="item-price">￥{{ item.price }}</div>
             <div>{{ item.comment }}</div>
@@ -21,24 +25,29 @@
             </div>
         </div>
     </div>
-    <ReviewList :item-id="item.id" @average-review="onAverageReview"/>
+    <ReviewList :item-id="item.id"/>
     <CartAddModal v-show="modalShow" @close-modal="closeModal"/>
+    <ItemImageModal v-show="imageModalShow" :item-image="item.image" @close-image="closeImage"/>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import axios from 'axios';
+
 import ReviewList from './ReviewList.vue';
 import CartAddModal from '../modal/CartAddModal.vue';
+import StarView from '../star/StarView.vue';
+import ItemImageModal from '../modal/ItemImageModal.vue'
 
 const item = ref('')
 const starAverage = ref(0)
-const beforeStar = ref(0)
-const lastStar = ref(0)
-const afterStar = ref(0)
-const starWidth = ref('100%')
+// const beforeStar = ref(0)
+// const lastStar = ref(0)
+// const afterStar = ref(0)
+// const starWidth = ref('100%')
 const modalShow = ref(false)
+const imageModalShow = ref(false)
 
 const route = useRoute()
 const router = useRouter()
@@ -81,12 +90,21 @@ function itemAdd(item){
 function countUpdate(event){
     count.value = event.target.value;
 }
-function onAverageReview(average, before, last, after, width){
-    starAverage.value = average
-    beforeStar.value = before
-    lastStar.value = last
-    afterStar.value = after
-    starWidth.value = width
+// function onAverageReview(average, before, last, after, width){
+//     starAverage.value = average
+//     beforeStar.value = before
+//     lastStar.value = last
+//     afterStar.value = after
+//     starWidth.value = width
+// }
+function starAverageView(average){
+    starAverage.value = average;
+}
+function openImage(){
+    imageModalShow.value = true
+}
+function closeImage(){
+    imageModalShow.value = false
 }
 </script>
 <style scoped>
@@ -98,6 +116,13 @@ function onAverageReview(average, before, last, after, width){
     width: 50%;
     margin: 20px;
 }
+.item-star-box{
+    display: flex;
+    align-items: center;
+}
+.item-star-average{
+    margin-right: 5px;
+}
 .item-name{
     font-size: 30px;
 }
@@ -106,7 +131,7 @@ function onAverageReview(average, before, last, after, width){
     margin: 10px 0px;
 }
 .item-image{
-    width: 500px;
+    width: 520px;
     height: 300px;
 }
 .average-star{
@@ -148,8 +173,7 @@ function onAverageReview(average, before, last, after, width){
     opacity: 0.7;
 }
 /**レビューの平均表示 */
-.before-star{
-    /* color: rgba(237, 237, 10, 0.889); */
+/* .before-star{
     color: orange;
 }
 .after-star{
@@ -166,8 +190,7 @@ function onAverageReview(average, before, last, after, width){
     left: 0;
     top: 0;
     width: var(--star-width);
-    overflow: hidden;
-    /* color: rgba(237, 237, 10, 0.889); */
+    overflow: hidden;    
     color: orange;
-}
+} */
 </style>

@@ -20,6 +20,7 @@ public class ItemController {
 	
 	@GetMapping("")
 	public List<Item> itemList(){
+		List<Item> itemList = itemService.itemList();
 		return itemService.itemList();
 	}
 	
