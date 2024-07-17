@@ -46,4 +46,10 @@ public class UserRepository {
 		SqlParameterSource params = new MapSqlParameterSource("mail",mail).addValue("password", password);
 		return template.queryForObject(sql, params, USER_ROW_MAPPER);
 	}
+	
+	public void userUpdate(User user) {
+		String sql = "UPDATE users SET name=:name,mail=:mail,password=:password,address=:address WHERE id=:id;";
+		SqlParameterSource params = new BeanPropertySqlParameterSource(user);
+		template.update(sql, params);
+	}
 }

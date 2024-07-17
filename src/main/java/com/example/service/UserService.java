@@ -24,4 +24,8 @@ public class UserService {
 	public User userSelect(String mail,String password) {
 		return userRepository.userSelect(mail, password);
 	}
+	
+	public void userUpdate(User user) {
+		userRepository.userUpdate(user);
+	}
 }

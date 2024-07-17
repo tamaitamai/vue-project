@@ -28,7 +28,7 @@
             <RouterLink to="/login">ログイン</RouterLink>
         </div>
         <div v-else class="login-box">
-            <div>{{ user.name }}さんこんにちは！</div>
+            <div class="user-name" @click="router.push('/userEdit')">{{ user.name }}さんこんにちは！</div>
             <button @click="logOut()" class="log-out-btn">ログアウト</button>
         </div>
 
@@ -47,7 +47,7 @@ const user = computed(() => store.getters.getUserData);
 const isShow = computed(() => user.value === null);
 const store = useStore();
 const router = useRouter()
-
+// アイテムを検索
 function itemSeach(){
     axios.post('/item/search',
         {
@@ -60,6 +60,7 @@ function itemSeach(){
         store.dispatch('updateItemListData',response.data);
     })
 }
+// ログアウト
 function logOut() {
   store.dispatch('updateUserData', null);
   router.push('/login')
@@ -117,6 +118,9 @@ header{
     align-items: center;
     flex-direction: column;
     margin: 10px;
+}
+.user-name:hover{
+    color: blue;
 }
 .log-out-btn{
     width: 100px;

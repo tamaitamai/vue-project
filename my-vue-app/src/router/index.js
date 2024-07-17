@@ -9,6 +9,7 @@ import ReviewInput from '@/components/main/detail/ReviewInput.vue'
 import HistoryItem from '@/components/main/history/HistoryItem.vue'
 import BuyPage from '@/components/main/cart/BuyPage.vue'
 import OrderInput from '@/components/main/order/OrderInput.vue'
+import UserEdit from '@/components/user/UserEdit.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
@@ -61,6 +62,11 @@ const router = new createRouter({
         path: '/orderInput',
         name: 'orderInput',
         component: OrderInput
+    },
+    {
+        path: '/userEdit',
+        name: 'userEdit',
+        component: UserEdit
     }
 ]
 })
