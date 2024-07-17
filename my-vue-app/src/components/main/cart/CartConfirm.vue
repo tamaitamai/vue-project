@@ -19,10 +19,10 @@
             </div>
         </div>
         <div class="cart-price-box">
-            <div>小計({{ totalCount }}個の商品)</div>
-            <div>：￥{{ totalPrice }}</div>
+            <div class="cart-total-price">小計({{ totalCount }}個の商品)</div>
+            <div class="cart-total-price">：￥{{ totalPrice }}</div>
             <div class="cart-price-btn-box">
-                <button @click="payment" class="cart-price-btn">購入完了</button>
+                 <button @click="orderInput" class="cart-price-btn">注文詳細確認</button>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@ const totalCount = ref(0)
 onMounted(() => {
     countData()
 })
-//カート内の商品を削除
+// カート内の商品を削除
 function deleteCart(cart){
     axios.post('/cart/delete',
         {
@@ -57,7 +57,7 @@ function deleteCart(cart){
         totalCount.value -= cart.count
     })  
 }
-//カート一覧を取得
+// カート一覧を取得
 function countData(){
     axios.post('/cart',
         {
@@ -95,16 +95,9 @@ function countSelect(event,cart){
         totalUpdate(response.data)
     })
 }
-//商品を購入
-function payment(){
-    axios.post('/cart/payment',
-        {
-            userId: user.value.id
-        }
-    )
-    .then(()=>{
-        router.push('/buyPage');
-    })
+// 注文詳細へ遷移
+function orderInput(){
+    router.push('/orderInput');
 }
 </script>
 <style scoped>
@@ -169,7 +162,7 @@ function payment(){
 .cart-price-box{
     border: 1px solid rgba(77, 74, 74, 0.19);
     width: 20%;
-    height: 100%;
+    height: 300px;
     margin: 20px;
     padding: 20px;
     display: flex;
@@ -178,7 +171,11 @@ function payment(){
 .cart-price-btn-box{
     display: flex;
     justify-content: center;
+    flex-direction: column;
     margin-top: auto;
+}
+.cart-total-price{
+    font-size: 30px;
 }
 .cart-price-btn{
     cursor: pointer;

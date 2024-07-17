@@ -4,6 +4,7 @@ package com.example.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.Cart;
 import com.example.domain.History;
+import com.example.domain.Order;
+import com.example.domain.RequestOrder;
 import com.example.domain.User;
 import com.example.service.CartService;
 import com.example.service.HistoryService;
+import com.example.service.OrderService;
 
 @RestController
 @RequestMapping("/cart")
@@ -28,6 +33,9 @@ public class CartController {
 	
 	@Autowired
 	private HistoryService historyService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	/**
 	 * カート一覧の表示
@@ -77,17 +85,29 @@ public class CartController {
 	 * @param cart
 	 */
 	@PostMapping("/payment")
-	public void payment(@RequestBody Cart cart) {
-		List<Cart> cartList = cartService.cartList(cart.getUserId());
-		cartService.cartDeleteByPayment(cart.getUserId());
+	public void payment(@RequestBody RequestOrder requestOrder) {
+		Integer userId = requestOrder.getUserId();
+		Map<Integer, String> orderMap = requestOrder.getOrderDateMap();
+		
+		List<Cart> cartList = cartService.cartList(userId);
+		cartService.cartDeleteByPayment(userId);
+		
 		History history = new History();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
 		String formatDate = format.format(date);
 		history.setPaymentDate(formatDate);
+		
+		Order order = new Order();		
+		order.setUserId(userId);
+		order.setAddress(requestOrder.getAddress());
+		
 		for(Cart addCart : cartList) {
 			BeanUtils.copyProperties(addCart, history);
-			historyService.historyInsert(history);			
+			historyService.historyInsert(history);
+			order.setCartId(addCart.getId());
+			order.setOrderDate(orderMap.get(addCart.getId()));
+			orderService.orderInsert(order);
 		}
 	}
 }

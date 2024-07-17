@@ -8,6 +8,7 @@ import CartConfirm from '@/components/main/cart/CartConfirm.vue'
 import ReviewInput from '@/components/main/detail/ReviewInput.vue'
 import HistoryItem from '@/components/main/history/HistoryItem.vue'
 import BuyPage from '@/components/main/cart/BuyPage.vue'
+import OrderInput from '@/components/main/order/OrderInput.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
@@ -55,6 +56,11 @@ const router = new createRouter({
         path: '/buyPage',
         name: 'buyPage',
         component: BuyPage
+    },
+    {
+        path: '/orderInput',
+        name: 'orderInput',
+        component: OrderInput
     }
 ]
 })

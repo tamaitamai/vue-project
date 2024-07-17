@@ -47,7 +47,7 @@ public class HistoryRepository {
 	 * @return
 	 */
 	public List<History> historyList(Integer userId){
-		String sql = "SELECT * FROM historys WHERE user_id = :userId;";
+		String sql = "SELECT * FROM historys WHERE user_id = :userId ORDER BY id desc;";
 		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		return template.query(sql, params,HISTORY_ROW_MAPPER);
 	}

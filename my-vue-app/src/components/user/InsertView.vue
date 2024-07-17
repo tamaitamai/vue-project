@@ -9,6 +9,8 @@
                 <input type="text" v-model="mail">
                 <p>パスワード:</p>
                 <input type="password" v-model="password">
+                <p>住所:</p>
+                <input type="text" v-model="address">
             </div>
             <button class="user-btn" @click="insertUser()">新規登録</button>
         </div>
@@ -23,18 +25,21 @@ const router = useRouter()
 const name = ref('')
 const mail = ref('')
 const password = ref('')
+const address = ref('')
 
 function insertUser(){
     axios.post('/user/insert',
         {
             name: name.value,
             mail: mail.value,
-            password: password.value
+            password: password.value,
+            address: address.value
         }
     ).then(() => {
         name.value = ''
         mail.value = ''
         password.value = ''
+        address.value = ''
         router.push('/login')
     })
     
