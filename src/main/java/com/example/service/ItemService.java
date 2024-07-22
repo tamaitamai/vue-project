@@ -32,7 +32,21 @@ public class ItemService {
 		return itemRepository.itemDetail(id);
 	}
 	
+	/**
+	 * 商品検索
+	 * @param name
+	 * @return
+	 */
 	public List<Item> itemSearch(String name) {
 		return itemRepository.itemSearch(name);
+	}
+	
+	/**
+	 * 商品絞り込み
+	 * @param genre
+	 * @return
+	 */
+	public List<Item> itemByGenre(String genre){
+		return itemRepository.itemByGenre(genre);
 	}
 }

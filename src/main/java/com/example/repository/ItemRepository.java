@@ -24,6 +24,7 @@ public class ItemRepository {
 		item.setComment(rs.getString("comment"));
 		item.setPrice(rs.getInt("price"));
 		item.setTotalReviewCount(rs.getInt("totalReviewCount"));
+		item.setGenre(rs.getString("genre"));
 		return item;
 	};
 	
@@ -33,7 +34,8 @@ public class ItemRepository {
 		item.setName(rs.getString("name"));
 		item.setImage(rs.getString("image"));
 		item.setComment(rs.getString("comment"));
-		item.setPrice(rs.getInt("price"));		
+		item.setPrice(rs.getInt("price"));
+		item.setGenre(rs.getString("genre"));
 		return item;
 	};
 	
@@ -55,7 +57,7 @@ public class ItemRepository {
 	 * @return
 	 */
 	public Item itemDetail(Integer id) {
-		String sql = "SELECT id,name,image,comment,price FROM items WHERE id = :id;";
+		String sql = "SELECT * FROM items WHERE id = :id;";
 		SqlParameterSource params = new MapSqlParameterSource("id",id);
 		return template.queryForObject(sql, params, ITEM_DETAIL_ROW_MAPPER);
 	}
@@ -71,6 +73,19 @@ public class ItemRepository {
 				+ "(SELECT item_id,count(*) as totalReviewCount FROM reviews GROUP BY item_id) as r "
 				+ "ON i.id = r.item_id WHERE i.name LIKE :name ORDER BY id;";
 		SqlParameterSource params = new MapSqlParameterSource("name","%"+name+"%");
+		return template.query(sql, params, ITEM_ROW_MAPPER);
+	}
+	
+	/**
+	 * 商品絞り込み
+	 * @param genre
+	 * @return
+	 */
+	public List<Item> itemByGenre(String genre){
+		String sql = "SELECT i.*,r.totalReviewCount FROM items as i LEFT JOIN "
+				+ "(SELECT item_id,count(*) as totalReviewCount FROM reviews GROUP BY item_id) as r "
+				+ "ON i.id = r.item_id WHERE i.genre = :genre ORDER BY id;";
+		SqlParameterSource params = new MapSqlParameterSource("genre",genre);
 		return template.query(sql, params, ITEM_ROW_MAPPER);
 	}
 }

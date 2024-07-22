@@ -14,4 +14,5 @@ public class Item {
 	private String comment;
 	private Integer price;
 	private Integer totalReviewCount;
+	private String genre;
 }

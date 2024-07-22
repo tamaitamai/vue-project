@@ -33,4 +33,9 @@ public class ItemController {
 	public List<Item> itemSearch(@RequestBody Item item){
 		return itemService.itemSearch(item.getName());
 	}
+	
+	@PostMapping("/genre")
+	public List<Item> itemByGenre(@RequestBody Item item){
+		return itemService.itemByGenre(item.getGenre());
+	}
 }

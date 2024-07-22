@@ -1,35 +1,40 @@
 <template>
     <header>
         <div class="menu-box">
-            <RouterLink to="/">
-                <div style="margin: 0px 10px;">ホーム</div>
-            </RouterLink>
+            <RouterLink to="/" class="top-name" style="margin: 0px 10px">ホーム</RouterLink>
+            <!-- 検索欄 -->
             <div class="search-box">
                 <input type="text" class="search-input" v-model="itemName">
-                <p class="search-btn" @click="itemSeach">🔎</p>
+                <span class="search-btn" @click="itemSeach">🔎</span>
             </div>
-            <!-- <RouterLink to="/item">商品一覧</RouterLink> -->
+            <!-- アイテム絞り込み -->
+            <select class="top-genre" @change="itemGenre">
+                <option value="">---</option>
+                <option value="all">すべて</option>
+                <option :value="item.genre" v-for="item in itemList.keys()" :key="item">{{ itemList.get(item) }}</option>
+            </select>
+            <!-- アイテム情報 -->
             <div class="select-box">
-                <RouterLink :to="!isShow ? '/cartConfirm' : '/login'" style="font-size: 25px">🛒</RouterLink>
+                <RouterLink :to="!isShow ? '/cartConfirm' : '/login'" class="select-item">🛒</RouterLink>
                 カート
             </div>
             <div class="select-box">
-                <RouterLink :to="!isShow ? '/history' : '/login'" style="font-size: 25px">🕐</RouterLink>
+                <RouterLink :to="!isShow ? '/history' : '/login'" class="select-item">🕐</RouterLink>
                 <div>履歴</div>
             </div>
             <div class="select-box">
-                <div style="font-size: 25px">☆</div>
+                <div class="select-item">☆</div>
                 <div>お気に入り</div>
             </div>
         </div>
-
+        <!-- ユーザー情報 -->
         <div v-if="isShow" class="login-box">
-            <RouterLink to="/insert">新規登録</RouterLink>
-            <RouterLink to="/login">ログイン</RouterLink>
+            <RouterLink to="/insert" class="top-name">新規登録</RouterLink>
+            <RouterLink to="/login" class="top-name">ログイン</RouterLink>
         </div>
         <div v-else class="login-box">
-            <div class="user-name" @click="router.push('/userEdit')">{{ user.name }}さんこんにちは！</div>
-            <button @click="logOut()" class="log-out-btn">ログアウト</button>
+            <div class="top-name" @click="router.push('/userEdit')">{{ user.name }}さんこんにちは！</div>
+            <div @click="logOut()" class="top-name">ログアウト</div>
         </div>
 
     </header>
@@ -43,10 +48,18 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const itemName = ref('');
+const itemList = ref(new Map());
 const user = computed(() => store.getters.getUserData);
 const isShow = computed(() => user.value === null);
 const store = useStore();
 const router = useRouter()
+// アイテム一覧を取得
+axios.get('/item')
+.then(response => {
+    response.data.forEach(item => {
+        itemList.value.set(item.genre,item.genre)
+    })
+})
 // アイテムを検索
 function itemSeach(){
     axios.post('/item/search',
@@ -59,6 +72,26 @@ function itemSeach(){
         router.push('/item')
         store.dispatch('updateItemListData',response.data);
     })
+}
+// アイテムを絞り込む
+function itemGenre(event){
+    if(event.target.value === 'all'){
+        axios.get('/item')
+        .then(response => {
+            router.push('/item')
+            store.dispatch('updateItemListData',response.data);
+        })
+    }else{
+        axios.post('/item/genre',
+            {
+                genre: event.target.value
+            }
+        )
+        .then(response => {
+            router.push('/item')
+            store.dispatch('updateItemListData',response.data);
+        })        
+    }
 }
 // ログアウト
 function logOut() {
@@ -83,52 +116,69 @@ header{
     display: flex;
     align-items: center;
 }
+/* 検索欄 */
 .search-box{
     display: flex;
-    justify-content: center;
     align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: orange;
 }
 .search-input{
-    height: 30px;
-    width: 500px;
-    border-top-left-radius: 5px;
+    font-size: 20px;
+    width: 300px;
+    padding: 5px;
+    border: none;
+    border-right: 1px solid black;
     border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
 }
 .search-btn{
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background-color: rgb(14, 199, 137);
-    width: 35px;
-    height: 35px;
+    padding: 0px 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+/* アイテム絞り込み */
+.top-genre{
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 0px 10px;
+    background-color: rgba(180, 176, 176, 0.19);
+}
+/* アイテム情報 */
 .select-box{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin: 0px 5px;
+    margin: 0px 10px;
 }
+.select-item{
+    font-size: 25px;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* ユーザー情報 */
 .login-box{
     display: flex;
     justify-content: end;
     align-items: center;
     flex-direction: column;
-    margin: 10px;
+    margin-right: 30px; 
 }
-.user-name:hover{
+.top-name{
+    cursor: pointer;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin: 5px 0px;
+}
+.top-name:hover{
     color: blue;
-}
-.log-out-btn{
-    width: 100px;
-    padding: 3px;
-    margin-top: 5px;
-    border-radius: 5px;
-}
-.log-out-btn:hover{
-    opacity: 0.7;
 }
 </style>
