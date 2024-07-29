@@ -45,29 +45,4 @@ function insertUser(){
     
 }
 </script>
-
-<style scoped>
-main{
-    display: flex;
-    justify-content: center;
-}
-.user-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 30%;
-    margin-top: 50px;
-}
-.user-btn{
-    margin: 20px 0px;
-    border-radius: 5px;
-    padding: 5px;
-}
-.user-btn:hover{
-    opacity: 0.7;
-}
-</style>
-
+<style src="../../css/user/user.css" scoped></style>

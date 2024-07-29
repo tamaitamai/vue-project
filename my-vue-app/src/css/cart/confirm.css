@@ -1,0 +1,87 @@
+.cart-area{
+    display: flex;
+}
+.cart-list{
+    display: flex;
+    flex-direction: column;
+    width: 80%
+}
+.cart-box{
+    width: 90%;
+    display: flex;
+    border-top: 1px solid rgba(77, 74, 74, 0.19);    
+}
+.cart-image{
+    width: 200px;
+    height: 120px;
+    padding: 10px;
+}
+.cart-image:hover{
+    opacity: 0.7;
+}
+.cart-info{  
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+/* カート情報の上側 */
+.cart-info-top{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.cart-name{
+    margin-right: 20px;
+    font-size: 20px;
+}
+.cart-price{
+    font-size: 20px;
+    margin-right: 20px;
+}
+/* カート情報の下側 */
+.cart-info-bottom{
+    display: flex;
+    align-items: center;
+    margin-top: auto;    
+}
+.cart-count{
+    border-radius: 5px;
+    padding: 5px;
+    background-color: rgba(180, 176, 176, 0.19);
+    margin: 0px 20px 10px 0px;
+}
+.cart-delete:hover{
+    color: red;
+}
+
+/* 価格情報 */
+.cart-price-box{
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    width: 20%;
+    height: 300px;
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.cart-price-btn-box{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: auto;
+}
+.cart-total-price{
+    font-size: 30px;
+}
+.cart-price-btn{
+    cursor: pointer;
+    width: 90%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    background-color: rgb(252 249 4 / 95%);
+    font-size: 20px;
+    border-radius: 50px;
+}
+.cart-price-btn:hover{
+    opacity: 0.7;
+}

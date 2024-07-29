@@ -1,6 +1,6 @@
 <template>
-    <div class="user-edit-area">
-        <div class="user-edit-box">
+    <main>
+        <div class="user-box">
             <h1>ユーザー情報編集</h1>
             <label for="name">名前：</label>
             <input type="text" id="name" v-model="name">
@@ -14,9 +14,9 @@
             <label for="password">パスワード：</label>
             <input type="text" id="password" v-model="password">
             <br>
-            <button @click="userUpdate">ユーザー情報を更新</button>
+            <button class="user-btn" @click="userUpdate">ユーザー情報を更新</button>
         </div>
-    </div>
+    </main>
 </template>
 <script setup>
 import axios from 'axios';
@@ -53,28 +53,4 @@ function userUpdate(){
     })
 }
 </script>
-<style scoped>
-.user-edit-area{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-.user-edit-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid black;    
-    margin-top: 50px;
-    border-radius: 20px;
-    width: 30%;
-}
-label{
-    font-size: 20px;
-}
-input{
-    font-size: 20px;
-    border-radius: 5px;
-}
-</style>
+<style src="../../css/user/user.css" scoped></style>

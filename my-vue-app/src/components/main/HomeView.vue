@@ -12,7 +12,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import ItemList from './ItemList.vue';
+import ItemList from './item/ItemList.vue';
 const homeImages =ref([
     {id:1, image: 'anzu1.jpg', flag: true},
     {id:2, image: 'chieri1.jpg', flag: false},
@@ -56,20 +56,4 @@ function rightClick(){
 }
 </script>
 
-<style scoped>
-.image-list,.image-box{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.image-list{
-    margin-top: 50px;
-}
-.home-image{
-    width: 50%;
-    margin: 0px 20px;
-}
-.image-change{
-    font-size: 100px;
-}
-</style>
+<style src="../../css/main/home.css" scoped></style>

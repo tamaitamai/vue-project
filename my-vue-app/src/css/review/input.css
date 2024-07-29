@@ -1,0 +1,27 @@
+.review-area, .review-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.review-box{
+    box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.8);
+    width: 30%;
+    border-radius: 10px;
+    margin-top: 50px;
+}
+.review-name{
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.review-star{
+    margin-top: 20px;
+    font-size: 20px;
+}
+.star{
+    /* color: rgba(237, 237, 10, 0.889); */
+    color: orange;
+}
+.review-btn{
+    margin: 10px 0px;
+}

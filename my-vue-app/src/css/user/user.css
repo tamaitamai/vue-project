@@ -2,7 +2,7 @@ main{
     display: flex;
     justify-content: center;
 }
-.login-box{
+.user-box{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,4 +11,12 @@ main{
     border-radius: 10px;
     width: 30%;
     margin-top: 50px;
+}
+.user-btn{
+    margin: 20px 0px;
+    border-radius: 5px;
+    padding: 5px;
+}
+.user-btn:hover{
+    opacity: 0.7;
 }
