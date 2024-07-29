@@ -11,7 +11,7 @@
             <select class="top-genre" @change="itemGenre">
                 <option value="">---</option>
                 <option value="all">すべて</option>
-                <option :value="item.genre" v-for="item in itemList.keys()" :key="item">{{ itemList.get(item) }}</option>
+                <option :value="genre" v-for="genre in genreList.keys()" :key="genre">{{ genreList.get(genre) }}</option>
             </select>
             <!-- アイテム情報 -->
             <div class="select-box">
@@ -23,7 +23,7 @@
                 <div>履歴</div>
             </div>
             <div class="select-box">
-                <div class="select-item">☆</div>
+                <RouterLink :to="!isShow ? '/favorite' : '/login'" class="select-item">☆</RouterLink>
                 <div>お気に入り</div>
             </div>
         </div>
@@ -48,16 +48,16 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const itemName = ref('');
-const itemList = ref(new Map());
+const genreList = ref(new Map());
 const user = computed(() => store.getters.getUserData);
 const isShow = computed(() => user.value === null);
 const store = useStore();
 const router = useRouter()
-// アイテム一覧を取得
+// ジャンル一覧を取得
 axios.get('/item')
 .then(response => {
     response.data.forEach(item => {
-        itemList.value.set(item.genre,item.genre)
+        genreList.value.set(item.genre,item.genre)
     })
 })
 // アイテムを検索

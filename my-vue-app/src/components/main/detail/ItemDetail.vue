@@ -1,13 +1,13 @@
 <template>
     <div class="item-detail">
-        <img :src="'/image/' + item.image" class="item-image" @click="openImage">
+        <!-- 商品詳細 -->
+        <div class="item-image-box">
+            <img :src="'/image/' + item.image" class="item-image" @click="imageModalShow = true">
+            <div class="item-favorite" :class="favoriteSelect || favoriteShow ? {'select-favorite': true} : ''"
+            @click="favoriteClick">{{ favorite }}</div>
+        </div>
         <div class="detail-box">
             <div class="item-name">{{ item.name }}</div>
-            <!-- <div class="average-star">{{ starAverage }}
-                <span class="before-star" v-for="star in beforeStar" :key="star">★</span>
-                <span class="last-star" v-for="star in lastStar" :key="star" :style="{ '--star-width': starWidth }">★</span>
-                <span class="after-star" v-for="star in afterStar" :key="star">★</span>
-            </div> -->
             <div class="item-star-box">
                 <div class="item-star-average">{{ starAverage }}</div>
                 <StarView :itemId="item.id" @star-average="starAverageView"/>
@@ -15,10 +15,11 @@
             <div class="item-price">￥{{ item.price }}</div>
             <div>{{ item.comment }}</div>
         </div>
+        <!-- カートへの追加 -->
         <div class="price-box">
             <div class="item-cart-price">￥{{ item.price }}</div>
             <div class="price-add-box">
-                <select name="" @change="countUpdate" class="item-count">
+                <select name="" @change="count = $event.target.value" class="item-count">
                     <option v-for="num in 50" :value="num" :key="num">数量：{{ num }}</option>
                 </select>
                 <button class="item-btn" @click="itemAdd(item)">カートに入れる</button>
@@ -42,12 +43,11 @@ import ItemImageModal from '../modal/ItemImageModal.vue'
 
 const item = ref('')
 const starAverage = ref(0)
-// const beforeStar = ref(0)
-// const lastStar = ref(0)
-// const afterStar = ref(0)
-// const starWidth = ref('100%')
 const modalShow = ref(false)
 const imageModalShow = ref(false)
+const favorite = ref('♡');
+const favoriteSelect = ref(false);
+const favoriteShow = ref(false);
 
 const route = useRoute()
 const router = useRouter()
@@ -55,6 +55,7 @@ const store = useStore()
 const count =ref(1)
 const user = computed(() => store.getters.getUserData)
 
+// 商品の詳細を表示
 onMounted(()=>{
     axios.post('/item/detail',
         {
@@ -62,11 +63,15 @@ onMounted(()=>{
         }
     ).then(response => {
         item.value = response.data
+        if(user.value != null){
+            favoriteExists()
+        }
     })
 })
 function closeModal(){
     modalShow.value = false
 }
+// 商品をカートに追加
 function itemAdd(item){
     if(user.value === null){
         router.push('/login')
@@ -84,27 +89,56 @@ function itemAdd(item){
     )
     .then(() => {
         modalShow.value=true
-        console.log(modalShow.value)
     })
 }
-function countUpdate(event){
-    count.value = event.target.value;
-}
-// function onAverageReview(average, before, last, after, width){
-//     starAverage.value = average
-//     beforeStar.value = before
-//     lastStar.value = last
-//     afterStar.value = after
-//     starWidth.value = width
-// }
 function starAverageView(average){
     starAverage.value = average;
 }
-function openImage(){
-    imageModalShow.value = true
-}
 function closeImage(){
     imageModalShow.value = false
+}
+// すでにお気に入りに登録しているかを確認
+function favoriteExists(){
+    axios.post('/favorite/exists',
+        {
+            userId: user.value.id,
+            itemId: item.value.id,
+        }
+    )
+    .then(response => {
+        favoriteShow.value = response.data;
+        if(response.data == true){
+            favorite.value = '♥';
+        }
+    })
+}
+// お気に入りを追加
+function favoriteClick(){
+    if(user.value == null){
+        router.push('/login');
+        return false;
+    }
+    if(favorite.value === '♡'){
+        favoriteSelect.value = true;
+        favorite.value = '♥';
+    }else{
+        favoriteSelect.value = false;
+        favoriteShow.value = false;
+        favorite.value = '♡';
+    }
+    axios.post('/favorite/add',
+        {
+            userId: user.value.id,
+            itemId: item.value.id,
+            name: item.value.name,
+            image: item.value.image,
+            price: item.value.price,
+            genre: item.value.genre
+        }
+    )
+    .then(() => {
+        console.log('success');
+    })
 }
 </script>
 <style scoped>
@@ -130,6 +164,9 @@ function closeImage(){
     font-size: 35px;
     margin: 10px 0px;
 }
+.item-image-box{
+    position: relative;
+}
 .item-image{
     width: 520px;
     height: 300px;
@@ -137,6 +174,21 @@ function closeImage(){
 .average-star{
     font-size: 20px;
     border-bottom: 1px solid rgba(77, 74, 74, 0.19);
+}
+/* お気に入り */
+.item-favorite{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    font-size: 20px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 5px 11px;
+    cursor: pointer;
+}
+.select-favorite{
+    color: red;
 }
 /**カートへの追加周り */
 .price-box{
@@ -149,6 +201,7 @@ function closeImage(){
 .item-cart-price{
     font-size: 30px;
 }
+/* 金額周り */
 .price-add-box{
     margin-top: auto;
     display: flex;
@@ -172,25 +225,4 @@ function closeImage(){
 .item-btn:hover{
     opacity: 0.7;
 }
-/**レビューの平均表示 */
-/* .before-star{
-    color: orange;
-}
-.after-star{
-    color: lightgray;
-}
-.last-star{
-    display: inline-block;
-    position: relative;
-    color: lightgray;
-}
-.last-star::before {
-    content: '★';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: var(--star-width);
-    overflow: hidden;    
-    color: orange;
-} */
 </style>

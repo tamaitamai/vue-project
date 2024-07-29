@@ -10,6 +10,7 @@ import HistoryItem from '@/components/main/history/HistoryItem.vue'
 import BuyPage from '@/components/main/cart/BuyPage.vue'
 import OrderInput from '@/components/main/order/OrderInput.vue'
 import UserEdit from '@/components/user/UserEdit.vue'
+import FavoriteView from '@/components/main/favorite/FavoriteView.vue'
 const router = new createRouter({
     history: createWebHistory(),
     routes: [
@@ -67,7 +68,12 @@ const router = new createRouter({
         path: '/userEdit',
         name: 'userEdit',
         component: UserEdit
-    }
+    },
+    {
+        path: '/favorite',
+        name: 'favorite',
+        component: FavoriteView
+    },
 ]
 })
 export default router
