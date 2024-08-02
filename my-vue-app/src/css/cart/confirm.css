@@ -1,10 +1,13 @@
-.cart-area{
+.cart-main{
     display: flex;
+}
+.cart-area{
+    width: 80%;
 }
 .cart-list{
     display: flex;
     flex-direction: column;
-    width: 80%
+    width: 100%
 }
 .cart-box{
     width: 90%;
@@ -51,10 +54,49 @@
     background-color: rgba(180, 176, 176, 0.19);
     margin: 0px 20px 10px 0px;
 }
-.cart-delete:hover{
+.cart-delete-btn,.cart-after-btn{
+    cursor: pointer;
+}
+.cart-delete-btn:hover{
     color: red;
 }
-
+.cart-after-btn:hover{
+    color: blue;
+}
+/* あとで買う一覧 */
+.cart-after-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+.cart-after-box{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    margin: 20px;
+    padding: 10px 20px;
+}
+.cart-return-btn-box{
+    display: flex;
+    justify-content: center;
+}
+.cart-return-btn{
+    background-color: orange;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.cart-return-btn:hover{
+    opacity: 0.7;
+}
+.cart-after-delete-btn{
+    margin: 10px 0px;
+    cursor: pointer;
+}
+.cart-after-delete-btn:hover{
+    color: red;
+}
 /* 価格情報 */
 .cart-price-box{
     border: 1px solid rgba(77, 74, 74, 0.19);

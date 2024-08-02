@@ -14,31 +14,33 @@
 
         <!-- カート一覧 -->
         <div class="cart-list">
-            <div v-for="cart in cartList" :key="cart.id" class="cart-box">
-                <div>到着予定：{{ orderDateMap.has(cart.id) ? orderDateMap.get(cart.id) : formatNextDate }}</div>
-                <div class="cart-info-area">
-                    <!-- カートの情報 -->
-                    <div class="cart-info-box">
-                        <div class="cart-info-left-box">
-                            <img :src="'image/'+cart.image" class="cart-image">
-                            <div>数量：{{ cart.count }}</div>
+            <div v-for="cart in cartList" :key="cart.id">
+                <div class="cart-box" v-if="cart.afterFlg == 0">
+                    <div>到着予定：{{ orderDateMap.has(cart.id) ? orderDateMap.get(cart.id) : formatNextDate }}</div>
+                    <div class="cart-info-area">
+                        <!-- カートの情報 -->
+                        <div class="cart-info-box">
+                            <div class="cart-info-left-box">
+                                <img :src="'image/'+cart.image" class="cart-image">
+                                <div>数量：{{ cart.count }}</div>
+                            </div>
+                            <div class="cart-info-right-box">
+                                <div>{{ cart.name }}</div>
+                                <div>￥{{ cart.price }}</div>
+                            </div>
                         </div>
-                        <div class="cart-info-right-box">
-                            <div>{{ cart.name }}</div>
-                            <div>￥{{ cart.price }}</div>
-                        </div>
-                    </div>
-                    <!-- 送付日の選択 -->
-                    <div class="order-date-box">
-                        <div>お急ぎ便：</div>
-                        <div @click.stop="orderDateMap.set(cart.id,formatNextDate)">
-                            <input type="radio" :id="'next-date'+cart.id" :name="'orderDate'+cart.id" :value="formatNextDate" checked>
-                            <label :for="'next-date'+cart.id">{{ formatNextDate }}</label>
-                        </div>
-                        <br>
-                        <div @click.stop="selectDateOpen(cart)">
-                            <input type="radio" :id="'select-date'+cart.id" :name="'orderDate'+cart.id">
-                            <label :for="'select-date'+cart.id">時間指定</label>
+                        <!-- 送付日の選択 -->
+                        <div class="order-date-box">
+                            <div>お急ぎ便：</div>
+                            <div @click.stop="orderDateMap.set(cart.id,formatNextDate)">
+                                <input type="radio" :id="'next-date'+cart.id" :name="'orderDate'+cart.id" :value="formatNextDate" checked>
+                                <label :for="'next-date'+cart.id">{{ formatNextDate }}</label>
+                            </div>
+                            <br>
+                            <div @click.stop="selectDateOpen(cart)">
+                                <input type="radio" :id="'select-date'+cart.id" :name="'orderDate'+cart.id">
+                                <label :for="'select-date'+cart.id">時間指定</label>
+                            </div>
                         </div>
                     </div>
                 </div>

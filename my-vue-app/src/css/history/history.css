@@ -38,9 +38,22 @@
     float: right;
     margin: 10px;
 }
+.history-image-box{
+    margin-left: 20px;
+    position: relative;
+}
 .history-image{
     width: 180px;
     height: 100px;
+}
+.history-count{
+    position: absolute;
+    bottom: 0px;
+    right: -20px;
+    background-color: white;
+    padding: 3px 10px;
+    border: 1px solid black;
+    border-radius: 50px;
 }
 .history-name{
     font-size: 20px;

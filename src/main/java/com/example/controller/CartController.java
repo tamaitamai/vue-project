@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.domain.Cart;
 import com.example.domain.History;
 import com.example.domain.Order;
+import com.example.domain.RequestCartAfter;
 import com.example.domain.RequestOrder;
 import com.example.domain.User;
 import com.example.service.CartService;
@@ -70,6 +71,17 @@ public class CartController {
 	}
 	
 	/**
+	 * あとで買うに追加
+	 * @param cart
+	 * @return
+	 */
+	@PostMapping("/after")
+	public List<Cart> cartAfterList(@RequestBody RequestCartAfter request){
+		cartService.cartUpdateByAfter(request.getId(),request.isAfterExists());
+		return cartService.cartList(request.getUserId());
+	}
+	
+	/**
 	 * 購入する商品数の更新
 	 * @param cart
 	 * @return
@@ -103,11 +115,13 @@ public class CartController {
 		order.setAddress(requestOrder.getAddress());
 		
 		for(Cart addCart : cartList) {
-			BeanUtils.copyProperties(addCart, history);
-			historyService.historyInsert(history);
-			order.setCartId(addCart.getId());
-			order.setOrderDate(orderMap.get(addCart.getId()));
-			orderService.orderInsert(order);
+			if(addCart.getAfterFlg() == 0) {
+				BeanUtils.copyProperties(addCart, history);
+				historyService.historyInsert(history);
+				order.setCartId(addCart.getId());
+				order.setOrderDate(orderMap.get(addCart.getId()));
+				orderService.orderInsert(order);				
+			}
 		}
 	}
 }

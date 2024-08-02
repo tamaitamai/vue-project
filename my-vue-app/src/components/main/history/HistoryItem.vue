@@ -19,7 +19,12 @@
                 </div>
                 <div class="history-bottom">
                     <div class="bottom-left">
-                        <RouterLink :to="'/detail/' + history.itemId" class="history-name"><img :src="'/image/' + history.image" class="history-image"></RouterLink>
+                        <div class="history-image-box">
+                            <RouterLink :to="'/detail/' + history.itemId">
+                                <img :src="'/image/' + history.image" class="history-image">
+                            </RouterLink>
+                            <div class="history-count">{{ history.count }}</div>
+                        </div>
                         <RouterLink :to="'/detail/' + history.itemId" class="history-name">{{ history.name }}</RouterLink>
                     </div>
                     <div class="bottom-right">

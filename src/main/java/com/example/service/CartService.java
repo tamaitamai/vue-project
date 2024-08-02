@@ -33,6 +33,15 @@ public class CartService {
 	}
 	
 	/**
+	 * あとで買うに追加
+	 * @param id
+	 * @param exists
+	 */
+	public void cartUpdateByAfter(Integer id,boolean exists) {
+		cartRepository.cartUpdateByAfter(id,exists);
+	}
+	
+	/**
 	 * カートから商品を削除
 	 * @param id
 	 */

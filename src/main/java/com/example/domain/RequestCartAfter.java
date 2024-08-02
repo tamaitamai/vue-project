@@ -7,14 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class RequestCartAfter {
 	private Integer id;
 	private Integer userId;
-	private Integer itemId;
-	private String name;
-	private String image;
-	private Integer price;
-	private Integer count;
-	private Integer afterFlg;
-	private Integer delFlg;
+	private boolean afterExists;
 }
