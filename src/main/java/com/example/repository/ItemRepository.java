@@ -39,6 +39,19 @@ public class ItemRepository {
 		return item;
 	};
 	
+	private static RowMapper<Item> ITEM_RANK_ROW_MAPPER = (rs,i) ->{
+		Item item = new Item();
+		item.setId(rs.getInt("id"));
+		item.setName(rs.getString("name"));
+		item.setImage(rs.getString("image"));
+		item.setComment(rs.getString("comment"));
+		item.setPrice(rs.getInt("price"));
+		item.setGenre(rs.getString("genre"));
+		item.setCountSum(rs.getInt("count_sum"));
+		return item;
+	};
+
+	
 	/**
 	 * 商品一覧
 	 * @return
@@ -87,5 +100,16 @@ public class ItemRepository {
 				+ "ON i.id = r.item_id WHERE i.genre = :genre ORDER BY id;";
 		SqlParameterSource params = new MapSqlParameterSource("genre",genre);
 		return template.query(sql, params, ITEM_ROW_MAPPER);
+	}
+	
+	/**
+	 * 商品ランキングの一覧確保
+	 * @return
+	 */
+	public List<Item> itemRankList(){
+		String sql = "SELECT items.*,hs.count_sum FROM "
+				+ "(SELECT item_id,SUM(count) AS count_sum FROM historys GROUP BY item_id) AS hs "
+				+ "LEFT JOIN items ON hs.item_id = items.id ORDER BY count_sum desc LIMIT 10;";
+		return template.query(sql, ITEM_RANK_ROW_MAPPER);
 	}
 }

@@ -20,7 +20,6 @@ public class ItemController {
 	
 	@GetMapping("")
 	public List<Item> itemList(){
-		List<Item> itemList = itemService.itemList();
 		return itemService.itemList();
 	}
 	
@@ -37,5 +36,10 @@ public class ItemController {
 	@PostMapping("/genre")
 	public List<Item> itemByGenre(@RequestBody Item item){
 		return itemService.itemByGenre(item.getGenre());
+	}
+	
+	@PostMapping("/rank")
+	public List<Item> itemRankList(){
+		return itemService.itemRankList();
 	}
 }

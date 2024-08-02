@@ -5,20 +5,20 @@
             <img :src="'/image/' + homeImage.image" class="home-image">
             <p class="image-change" @click="rightClick">〉</p>
         </div>
-        
     </div>
-    <ItemList></ItemList>
+    <ItemRank></ItemRank>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import ItemList from './item/ItemList.vue';
+import ItemRank from './item/itemRank.vue';
 const homeImages =ref([
     {id:1, image: 'anzu1.jpg', flag: true},
     {id:2, image: 'chieri1.jpg', flag: false},
     {id:3, image: 'uzuki1.jpg', flag: false},
 ])
 const viewImage = ref([])
+// ホーム写真を左にスライド
 function leftClick(){
     viewImage.value = homeImages.value.filter(h => {
         return h.flag === true
@@ -37,6 +37,7 @@ function leftClick(){
     });
 }
 
+// ホーム写真を右にスライド
 function rightClick(){
     viewImage.value = homeImages.value.filter(h => {
         return h.flag === true

@@ -49,4 +49,12 @@ public class ItemService {
 	public List<Item> itemByGenre(String genre){
 		return itemRepository.itemByGenre(genre);
 	}
+	
+	/**
+	 * 商品ランキングの一覧確保
+	 * @return
+	 */
+	public List<Item> itemRankList(){
+		return itemRepository.itemRankList();
+	}
 }

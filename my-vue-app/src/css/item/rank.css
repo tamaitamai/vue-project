@@ -1,0 +1,23 @@
+.item-rank-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+.item-rank-box{
+    width: 20%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    padding: 20px;
+    position: relative;
+    cursor: pointer;
+}
+.item-rank{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: orange;
+    padding: 5px 10px;
+    color: white;
+}
+.item-rank-image{
+    width: 100%;
+    margin-top: 40px;
+}
