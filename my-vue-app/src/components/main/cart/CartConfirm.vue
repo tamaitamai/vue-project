@@ -42,6 +42,8 @@
         <div class="cart-price-box">
             <div class="cart-total-price">小計({{ totalCount }}個の商品)</div>
             <div class="cart-total-price">：￥{{ totalPrice }}</div>
+            <div>{{ totalPrice/100 }}ポイント獲得予定</div>
+            <div>使用可能ポイント：{{ point }}</div>
             <div class="cart-price-btn-box">
                  <button @click="orderInput" class="cart-price-btn">注文詳細確認</button>
             </div>
@@ -61,6 +63,17 @@ const cartList = ref('')
 const cartAfterList = ref('')
 const totalPrice = ref(0)
 const totalCount = ref(0)
+const point = ref(0)
+
+// ユーザーのポイント合計の確保
+axios.post('/point',
+    {
+        userId: user.value.id
+    }
+)
+.then(response=>{
+    point.value = response.data
+})
 
 onMounted(() => {
     countData()

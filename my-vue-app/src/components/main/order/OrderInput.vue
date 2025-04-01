@@ -52,6 +52,11 @@
     <div class="order-price-box">
         <div class="order-total-price">小計({{ totalCount }}個の商品)：</div>
         <div class="order-total-price">￥{{ totalPrice }}</div>
+        <div>{{ totalPrice/100 }}ポイント獲得予定</div>
+        <div>
+            <div>使用ポイント：</div>
+            <input type="text" v-model="point">
+        </div>
         <div class="order-price-btn-box">
             <button class="order-price-btn" @click="payment">購入確定</button>
         </div>
@@ -69,7 +74,7 @@
 </template>
 <script setup>
 import axios from 'axios';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -83,6 +88,7 @@ const totalCount = ref(0)
 const selectDateShow = ref(false)
 const orderCartId = ref(0)
 const orderDateMap = ref(new Map())
+const point = ref('')
 
 // 明日の日付の表示
 const today = ref(new Date())
@@ -96,8 +102,14 @@ const nextDateValue = ref(year.value+'-'+month.value+'-'+day.value)
 const orderDateValue = ref('')
 orderDateValue.value = nextDateValue.value
 
-// カート一覧の取得
+watch(point, ()=>{
+    if(totalPrice.value < point.value && point.value != 0 && totalPrice.value !=0){
+        point.value = totalPrice.value;
+    }
+})
+
 onMounted(()=>{
+    // カート一覧の取得
     axios.post('/cart',
         {
             id: user.value.id
@@ -110,6 +122,15 @@ onMounted(()=>{
             totalCount.value = totalCount.value + cart.count
         });
     })
+    // ユーザーのポイント合計の確保
+    axios.post('/point',
+        {
+            userId: user.value.id
+        }
+    )
+    .then(response=>{
+        point.value = response.data
+    })
 })
 // 商品を購入
 function payment(){
@@ -117,7 +138,8 @@ function payment(){
         {
             userId: user.value.id,
             orderDateMap: Object.fromEntries(orderDateMap.value),
-            address: user.value.address
+            address: user.value.address,
+            point: point.value
         }
     )
     .then(()=>{

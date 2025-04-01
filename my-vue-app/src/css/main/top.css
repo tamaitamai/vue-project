@@ -68,6 +68,19 @@ header{
     flex-direction: column;
     margin-right: 30px; 
 }
+.login-info-area{
+    position: relative;
+    width: 100%;
+}
+.login-info-box{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid black;
+}
 .top-name{
     cursor: pointer;
     font-size: 20px;

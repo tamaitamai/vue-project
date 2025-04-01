@@ -32,8 +32,14 @@
             <RouterLink to="/insert" class="top-name">新規登録</RouterLink>
             <RouterLink to="/login" class="top-name">ログイン</RouterLink>
         </div>
-        <div v-else class="login-box">
-            <div class="top-name" @click="router.push('/userEdit')">{{ user.name }}さんこんにちは！</div>
+        <div v-else class="login-box" @mouseleave="userInfoShow = false">
+            <div class="top-name" @mouseover="userInfoShow = true">{{ user.name }}さんこんにちは！</div>
+            <div class="login-info-area" v-show="userInfoShow">
+                <div class="login-info-box">
+                    <div class="top-name" @click="router.push('/userEdit')">ユーザー情報編集</div>
+                    <RouterLink to="/pointList">{{ point }}ポイント</RouterLink>
+                </div>
+            </div>
             <div @click="logOut()" class="top-name">ログアウト</div>
         </div>
 
@@ -43,7 +49,7 @@
 
 <script setup>
 import axios from 'axios';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -51,6 +57,9 @@ const itemName = ref('');
 const genreList = ref(new Map());
 const user = computed(() => store.getters.getUserData);
 const isShow = computed(() => user.value === null);
+const userInfoShow = ref(false);
+const point = ref('');
+
 const store = useStore();
 const router = useRouter()
 // ジャンル一覧を取得
@@ -59,6 +68,23 @@ axios.get('/item')
     response.data.forEach(item => {
         genreList.value.set(item.genre,item.genre)
     })
+})
+// ユーザーのポイント合計の確保
+function getPoint(){
+    if(user.value != null){
+        axios.post('/point',
+            {
+                userId: user.value.id
+            }
+        )
+        .then(response=>{
+            point.value = response.data
+        })
+    }
+}
+getPoint()
+watch(user, ()=>{
+    getPoint()
 })
 // アイテムを検索
 function itemSeach(){

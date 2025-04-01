@@ -1,6 +1,7 @@
 package com.example.controller;
 
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.domain.Cart;
 import com.example.domain.History;
 import com.example.domain.Order;
+import com.example.domain.Point;
 import com.example.domain.RequestCartAfter;
 import com.example.domain.RequestOrder;
 import com.example.domain.User;
 import com.example.service.CartService;
 import com.example.service.HistoryService;
 import com.example.service.OrderService;
+import com.example.service.PointService;
 
 @RestController
 @RequestMapping("/cart")
@@ -37,6 +40,9 @@ public class CartController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private PointService pointService;
 	
 	/**
 	 * カート一覧の表示
@@ -113,6 +119,15 @@ public class CartController {
 		Order order = new Order();		
 		order.setUserId(userId);
 		order.setAddress(requestOrder.getAddress());
+
+		Timestamp timestamp = new Timestamp(date.getTime());
+		if(requestOrder.getPoint() != 0) {
+			Point usePoint = new Point();
+			usePoint.setUserId(userId);
+			usePoint.setPoint(requestOrder.getPoint()*-1);
+			usePoint.setCreateDate(timestamp);
+			pointService.insert(usePoint);			
+		}
 		
 		for(Cart addCart : cartList) {
 			if(addCart.getAfterFlg() == 0) {
@@ -120,7 +135,14 @@ public class CartController {
 				historyService.historyInsert(history);
 				order.setCartId(addCart.getId());
 				order.setOrderDate(orderMap.get(addCart.getId()));
-				orderService.orderInsert(order);				
+				orderService.orderInsert(order);	
+				
+				Point point = new Point();
+				point.setUserId(userId);
+				point.setItemId(addCart.getItemId());
+				point.setPoint(addCart.getPrice()/100);
+				point.setCreateDate(timestamp);
+				pointService.insert(point);
 			}
 		}
 	}

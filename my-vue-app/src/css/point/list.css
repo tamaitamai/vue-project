@@ -1,0 +1,26 @@
+.point-list{
+    width: 100%;
+}
+.point-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    width: 80%;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.point-use-box{
+    display: flex;
+    align-items: center;
+}
+.use,.get{
+    margin-right: 50px;
+    padding: 5px 10px;
+}
+.use{
+    background-color: rgba(77, 74, 74, 0.19);
+}
+.get{
+    background-color: orange;
+}
