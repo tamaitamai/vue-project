@@ -1,0 +1,77 @@
+.container{
+    display: flex;
+}
+.item-area{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.item-list{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.item-title{
+    text-align: center;
+}
+.item-box{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    border-radius: 5px;
+    width: 20%;
+    margin: 20px 15px;
+    cursor: pointer;
+}
+/* 商品画像と情報 */
+.item-image-area{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+    background-color: rgba(180, 176, 176, 0.19);
+}
+.item-image{
+    width: 90%;
+    height: 100%;
+}
+.item-info-area{
+    margin-left: 20px;
+}
+.item-star-box{
+    display: flex;
+    align-items: center;
+}
+.item-star-average{
+    margin-left: 5px;
+}
+.item-count{
+    font-size: 20px;
+    margin: 10px 0px;
+    padding: 2px;
+    cursor: pointer;
+}
+.item-count:hover{
+    opacity: 0.5;
+}
+/* 商品追加ボタン */
+.item-btn-area{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: default;
+    margin-top: auto;
+}
+.item-btn{
+    cursor: pointer;
+    width: 70%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    background-color: rgb(252 249 4 / 95%);
+    margin: 5px 0px;
+    font-size: 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+.item-btn:hover{
+    opacity: 0.7;
+}

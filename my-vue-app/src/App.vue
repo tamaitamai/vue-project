@@ -10,6 +10,3 @@ import TopHeader from './components/main/TopHeader.vue'
 
 </script>
 
-<style>
-/* スタイルはお好みで */
-</style>

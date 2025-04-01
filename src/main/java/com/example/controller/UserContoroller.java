@@ -39,4 +39,18 @@ public class UserContoroller {
 		session.setAttribute("user", userSelect);
 		return userSelect;
 	}
+	
+	/**
+	 * ログアウト
+	 */
+	@PostMapping("/logOut")
+	public void logOut() {
+		session.invalidate();
+	}
+	
+	@PostMapping("/update")
+	public User userUpdate(@RequestBody User user) {
+		userService.userUpdate(user);
+		return userService.userSelect(user.getMail(), user.getPassword());
+	}
 }

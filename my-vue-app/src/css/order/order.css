@@ -1,0 +1,109 @@
+/* 送り先表示 */
+.order-area{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.order-box{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;    
+    width: 100%;
+}
+.address-box{
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    padding: 20px;
+}
+.user-name{
+    font-size: 20px;
+}
+.user-address{
+    font-size: 15px;
+}
+/* カート一覧 */
+.cart-list{
+    width: 70%;
+}
+.cart-box{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    padding: 10px;
+    margin-top: 20px;
+}
+.cart-info-area{
+    display: flex;
+}
+.cart-info-box{
+    display: flex;
+    background-color: rgba(180, 176, 176, 0.19);
+    padding: 20px;
+}
+.cart-info-right-box{
+    margin-left: 20px;
+}
+.cart-image{
+    width: 200px;
+    height: 120px;
+}
+/* 送付日の設定 */
+.order-date-box{
+    margin-left: 50px;
+}
+/* 金額表示 */
+.order-price-box{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    width: 30%;
+    height: 300px;
+    margin-right: 50px;
+    padding: 20px;
+}
+.order-price-btn-box{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: auto;
+}
+.order-total-price{
+    font-size: 30px;
+}
+.order-price-btn{
+    cursor: pointer;
+    width: 90%;
+    border: 1px solid rgba(77, 74, 74, 0.19);
+    background-color: rgb(252 249 4 / 95%);
+    font-size: 20px;
+    border-radius: 50px;
+}
+.order-price-btn:hover{
+    opacity: 0.7;
+}
+.select-date-area{
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.7)
+}
+.select-date-box{
+    background-color: white;
+    border: 1px solid black;
+    width: 30%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+}
