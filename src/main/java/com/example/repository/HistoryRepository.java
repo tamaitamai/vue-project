@@ -35,7 +35,7 @@ public class HistoryRepository {
 	 * @param history
 	 */
 	public void historyInsert(History history) {
-		String sql = "INSERT INTO historys(user_id,item_id,name,image,price,count,payment_date) "
+		String sql = "INSERT INTO histories(user_id,item_id,name,image,price,count,payment_date) "
 				+ "VALUES(:userId,:itemId,:name,:image,:price,:count,:paymentDate);";
 		SqlParameterSource params = new BeanPropertySqlParameterSource(history);
 		template.update(sql, params);
@@ -47,7 +47,7 @@ public class HistoryRepository {
 	 * @return
 	 */
 	public List<History> historyList(Integer userId){
-		String sql = "SELECT * FROM historys WHERE user_id = :userId ORDER BY id desc;";
+		String sql = "SELECT * FROM histories WHERE user_id = :userId ORDER BY id desc;";
 		SqlParameterSource params = new MapSqlParameterSource("userId",userId);
 		return template.query(sql, params,HISTORY_ROW_MAPPER);
 	}

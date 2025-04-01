@@ -125,7 +125,7 @@ public class CartController {
 			Point usePoint = new Point();
 			usePoint.setUserId(userId);
 			usePoint.setPoint(requestOrder.getPoint()*-1);
-			usePoint.setCreateDate(timestamp);
+			usePoint.setCreateDate(formatDate);
 			pointService.insert(usePoint);			
 		}
 		
@@ -141,7 +141,7 @@ public class CartController {
 				point.setUserId(userId);
 				point.setItemId(addCart.getItemId());
 				point.setPoint(addCart.getPrice()/100);
-				point.setCreateDate(timestamp);
+				point.setCreateDate(formatDate);
 				pointService.insert(point);
 			}
 		}
