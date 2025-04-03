@@ -55,7 +55,7 @@ public class FavoriteController {
 	
 	@PostMapping("/genre")
 	public List<Favorite> favoriteListByGenre(@RequestBody RequestFavoriteGenre requestFavoriteGenre){
-		List<Favorite> favoriteList = favoriteService.favoriteListByGenre(requestFavoriteGenre.getGenreList());
+		List<Favorite> favoriteList = favoriteService.favoriteListByGenre(requestFavoriteGenre.getUserId(), requestFavoriteGenre.getGenreList());
 		return favoriteList;
 	}
 }

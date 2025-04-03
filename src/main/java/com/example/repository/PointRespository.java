@@ -25,7 +25,7 @@ public class PointRespository {
 		point.setUserId(rs.getInt("user_id"));
 		point.setItemId(rs.getInt("item_id"));
 		point.setPoint(rs.getInt("point"));
-		point.setCreateDate(rs.getTimestamp("create_date"));
+		point.setCreateDate(rs.getString("create_date"));
 		return point;
 	};
 	

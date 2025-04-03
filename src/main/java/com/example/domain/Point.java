@@ -16,5 +16,5 @@ public class Point {
 	private Integer userId;
 	private Integer itemId;
 	private Integer point;
-	private Timestamp createDate;
+	private String createDate;
 }

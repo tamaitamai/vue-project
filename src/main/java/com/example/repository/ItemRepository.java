@@ -108,7 +108,7 @@ public class ItemRepository {
 	 */
 	public List<Item> itemRankList(){
 		String sql = "SELECT items.*,hs.count_sum FROM "
-				+ "(SELECT item_id,SUM(count) AS count_sum FROM historys GROUP BY item_id) AS hs "
+				+ "(SELECT item_id,SUM(count) AS count_sum FROM histories GROUP BY item_id) AS hs "
 				+ "LEFT JOIN items ON hs.item_id = items.id ORDER BY count_sum desc LIMIT 10;";
 		return template.query(sql, ITEM_RANK_ROW_MAPPER);
 	}
