@@ -29,8 +29,8 @@ public class FavoriteService {
 	 * @param genre
 	 * @return
 	 */
-	public List<Favorite> favoriteListByGenre(List<String> genres){
-		return favoriteRepository.favoriteListByGenre(genres);
+	public List<Favorite> favoriteListByGenre(Integer userId, List<String> genres){
+		return favoriteRepository.favoriteListByGenre(userId, genres);
 	}
 	
 	/**

@@ -47,7 +47,7 @@ public class FavoriteRepository {
 	 * @param genre
 	 * @return
 	 */
-	public List<Favorite> favoriteListByGenre(List<String> genres){
+	public List<Favorite> favoriteListByGenre(Integer userId, List<String> genres){
 //		String sql = "SELECT * FROM　favorites WHERE genre = :genre";
 //		SqlParameterSource params = new MapSqlParameterSource("genre",genre);
 //		return template.query(sql, params, FAVORITE_ROW_MAPPER);
@@ -63,10 +63,11 @@ public class FavoriteRepository {
                                     .collect(Collectors.joining(" OR genre = "));
         
         // 動的に生成されたSQL
-        String sql = "SELECT * FROM favorites WHERE genre = " + placeholders;
+        String sql = "SELECT * FROM favorites WHERE user_id = :userId AND (genre = " + placeholders + ")";
         
         // パラメータマップの生成
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", userId);
         for (int i = 0; i < genres.size(); i++) {
             params.addValue("genre_" + i, genres.get(i));
         }
