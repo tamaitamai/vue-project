@@ -1,5 +1,14 @@
---ユーザー情報を保存
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS items;
+DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS review_goods;
+DROP TABLE IF EXISTS histories;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS points;
+
+--ユーザー情報を保存
 CREATE TABLE users(
 	id serial primary key,
 	name text,
@@ -9,7 +18,6 @@ CREATE TABLE users(
 );
 
 --商品一覧を保存
-DROP TABLE IF EXISTS items;
 CREATE TABLE items(
 	id serial primary key,
 	name text,
@@ -20,7 +28,6 @@ CREATE TABLE items(
 );
 
 --ユーザーごとのカート情報を保存
-DROP TABLE IF EXISTS carts;
 CREATE TABLE carts(
 	id serial primary key,
 	user_id Integer,
@@ -34,7 +41,6 @@ CREATE TABLE carts(
 );
 
 --商品ごとのレビューを保存
-DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews(
 	id serial primary key,
 	good Integer,
@@ -46,14 +52,12 @@ CREATE TABLE reviews(
 );
 
 --レビューごとのいいね情報を保存
-DROP TABLE IF EXISTS review_goods;
 CREATE TABLE review_goods(
 	id serial primary key,
 	review_id Integer,
 	user_id Integer
 );
 --ユーザーごとの履歴を保存
-DROP TABLE IF EXISTS histories;
 CREATE TABLE histories(
 	id serial primary key,
 	user_id Integer,
@@ -66,7 +70,6 @@ CREATE TABLE histories(
 );
 
 --注文時の情報を保存
-DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
 	id serial primary key,
 	user_id Integer,
@@ -76,7 +79,6 @@ CREATE TABLE orders(
 );
 
 --ユーザーごとのお気に入り情報を保存
-DROP TABLE IF EXISTS favorites;
 CREATE TABLE favorites(
 	id serial primary key,
 	user_id Integer,
@@ -88,7 +90,6 @@ CREATE TABLE favorites(
 );
 
 --ユーザーごとのポイント情報を保存
-DROP TABLE IF EXISTS points;
 CREATE TABLE points(
 	id serial primary key,
 	user_id Integer,
