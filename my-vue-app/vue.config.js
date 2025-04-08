@@ -2,8 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        // target: 'http://localhost:8080',
-        target: 'https://vue-backend-project.onrender.com',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         pathRewrite: { '^/api': '' },
       },
