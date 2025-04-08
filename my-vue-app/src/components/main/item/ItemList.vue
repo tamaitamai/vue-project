@@ -54,7 +54,7 @@ const searchItemList = computed(() => store.getters.getItemListData)
 
 onMounted(() => {
     console.log('item状態: '+process.env.VUE_APP_API_BASE_URL)
-    axios.get(process.env.VUE_APP_API_BASE_URL+'/item')
+    axios.get('/item')
     .then(response => {
         if(searchItemList.value === null){
             itemList.value = response.data

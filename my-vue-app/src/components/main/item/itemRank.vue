@@ -16,9 +16,9 @@ import { useRouter } from 'vue-router';
 const itemRankList = ref('')
 const router = new useRouter();
 // 商品ランキングの一覧
-axios.post(process.env.VUE_APP_API_BASE_URL+'/item/rank')
+console.log('home状態: '+process.env.VUE_APP_API_BASE_URL)
+axios.post('/item/rank')
 .then(response=>{
-    console.log('home状態: '+process.env.VUE_APP_API_BASE_URL)
     itemRankList.value = response.data;
 })
 // 商品詳細

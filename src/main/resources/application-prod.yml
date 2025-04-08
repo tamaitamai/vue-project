@@ -4,3 +4,7 @@ spring:
     url: jdbc:postgresql://dpg-cvno13p5pdvs73bavbag-a.oregon-postgres.render.com:5432/nazotoki
     username: nazotoki_user
     password: y3ZGRteHnbeI1TFCALrqB1hHTdTsIMAw
+    
+  web:
+    cors:
+      allowed-origins: "https://vue-project-vw4z.onrender.com"
