@@ -40,6 +40,7 @@ public class ItemController {
 	
 	@PostMapping("/rank")
 	public List<Item> itemRankList(){
+		System.out.println("実行しています");
 		return itemService.itemRankList();
 	}
 }
